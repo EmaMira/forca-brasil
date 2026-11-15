@@ -1,0 +1,2301 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="claro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forca do Brasil • Instituto Federal do Amapá</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('forca-brasil-tema') || 'claro';
+        document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'claro');
+      }
+    })();
+  </script>
+  <style>
+    :root {
+      --verde-if: #2f9e41;
+      --verde-escuro: #0d5c1e;
+      --verde-profundo: #063d13;
+      --verde-footer: #052e0f;
+      --govbr-azul: #1351b4;
+      --cinza-claro: #f4f7f5;
+      --laranja-alerta: #e67e22;
+      --vermelho-alerta: #c23616;
+      --texto-principal: #1a202c;
+      --texto-secundario: #4a5568;
+      --texto-suave: #718096;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: var(--cinza-claro);
+      color: var(--texto-principal);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ================= HEADER PADRÃO IFAP ================= */
+    .site-header {
+      background: linear-gradient(135deg, var(--verde-if) 0%, var(--verde-escuro) 55%, var(--verde-profundo) 100%);
+      color: #fff;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, .18);
+    }
+
+    .site-header .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .site-header .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .brand-emblema {
+      background: #fff;
+      padding: 6px 10px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    }
+
+    .brand-emblema img {
+      height: 48px;
+      width: auto;
+      display: block;
+    }
+
+    .brand-sigla {
+      display: block;
+      font-size: .76rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      opacity: .88;
+    }
+
+    .brand-text h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -.01em;
+      margin: 0;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Seletor de Tema (Claro / Escuro / Alto Contraste) */
+    .theme-switch {
+      display: inline-flex;
+      gap: 2px;
+      background: rgba(255, 255, 255, .15);
+      border: 1px solid rgba(255, 255, 255, .28);
+      border-radius: 999px;
+      padding: 3px;
+    }
+
+    .theme-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+      opacity: .8;
+      transition: background-color .15s ease, opacity .15s ease, color .15s ease;
+    }
+
+    .theme-btn:hover { opacity: 1; }
+    .theme-btn svg { width: 18px; height: 18px; }
+    .theme-btn[aria-pressed="true"] {
+      background: #fff;
+      color: var(--verde-escuro);
+      opacity: 1;
+    }
+
+    .btn-header-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      color: var(--govbr-azul);
+      font-weight: 700;
+      font-size: .9rem;
+      border: none;
+      padding: 9px 20px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: transform .15s ease, box-shadow .15s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .2);
+      white-space: nowrap;
+    }
+
+    .btn-header-pill:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, .28);
+    }
+
+    /* ================= SUB-BARRA DE NAVEGAÇÃO ================= */
+    .sub-nav {
+      background: #fff;
+      border-bottom: 1px solid rgba(6, 61, 19, .08);
+      box-shadow: 0 1px 4px rgba(6, 61, 19, .05);
+    }
+
+    .sub-nav .sub-nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 12px 0;
+      font-size: .9rem;
+    }
+
+    .breadcrumb-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .sub-nav a, .sub-nav button.link-nav {
+      background: none;
+      border: none;
+      color: var(--verde-escuro);
+      font-weight: 700;
+      font-size: .9rem;
+      cursor: pointer;
+      text-decoration: none;
+      padding: 0;
+    }
+
+    .sub-nav a:hover, .sub-nav button.link-nav:hover { color: var(--verde-if); }
+    .sub-nav .sub-nav-sep { color: #a0aec0; }
+    .sub-nav .sub-nav-atual { color: #4a5568; font-weight: 600; }
+
+    .badge-sala-topo {
+      background: rgba(47, 158, 65, .12);
+      color: var(--verde-escuro);
+      font-weight: 800;
+      font-size: .8rem;
+      letter-spacing: .06em;
+      padding: 4px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(47, 158, 65, .3);
+    }
+
+    /* ================= CONTEÚDO PRINCIPAL ================= */
+    main.page-content {
+      padding: 28px 0 48px;
+      flex: 1;
+    }
+
+    .secao-titulo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--texto-principal);
+      margin-bottom: 18px;
+      letter-spacing: -.01em;
+    }
+
+    .secao-titulo::before {
+      content: "";
+      width: 6px;
+      height: 24px;
+      border-radius: 3px;
+      background: var(--verde-if);
+    }
+
+    /* Card Padrão IFAP */
+    .card-ifap {
+      position: relative;
+      background: #fff;
+      border: 1px solid rgba(6, 61, 19, .08);
+      border-top: 5px solid var(--verde-if);
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(6, 61, 19, .08);
+      padding: 26px 28px;
+      margin-bottom: 24px;
+    }
+
+    /* Meta Grid da Turma */
+    .turma-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+      gap: 12px 14px;
+      margin-bottom: 22px;
+    }
+
+    .meta-item {
+      background: var(--cinza-claro);
+      border-radius: 10px;
+      padding: 10px 14px;
+      border: 1px solid rgba(6, 61, 19, .05);
+    }
+
+    .meta-rotulo {
+      display: block;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--texto-suave);
+      margin-bottom: 3px;
+    }
+
+    .meta-valor {
+      color: var(--texto-principal);
+      font-weight: 700;
+      font-size: .92rem;
+    }
+
+    .meta-item.destaque-azul { background: rgba(19, 81, 180, .07); }
+    .meta-item.destaque-azul .meta-valor { color: var(--govbr-azul); }
+
+    .meta-item.destaque-verde { background: rgba(47, 158, 65, .10); }
+    .meta-item.destaque-verde .meta-valor { color: var(--verde-escuro); }
+
+    .meta-item.destaque-alerta { background: rgba(194, 54, 22, .08); }
+    .meta-item.destaque-alerta .meta-valor { color: var(--vermelho-alerta); }
+
+    /* Cabeçalho da Rodada */
+    .rodada-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .pill-status {
+      display: inline-block;
+      font-size: .74rem;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--verde-escuro);
+      background: rgba(47, 158, 65, .12);
+      border-radius: 999px;
+      padding: 5px 14px;
+    }
+
+    .pill-professor {
+      display: inline-block;
+      font-size: .76rem;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--govbr-azul);
+      border-radius: 999px;
+      padding: 5px 14px;
+    }
+
+    .pill-tentativas {
+      display: inline-block;
+      font-size: .78rem;
+      font-weight: 700;
+      color: var(--vermelho-alerta);
+      background: rgba(194, 54, 22, .10);
+      border-radius: 999px;
+      padding: 5px 14px;
+    }
+
+    /* Área Central do Jogo (Bandeira + Dica) */
+    .arena-superior {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 28px;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .bandeira-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .bandeira-frame {
+      width: 100%;
+      height: 230px;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #edf2f7;
+      position: relative;
+      border: 1px solid rgba(6, 61, 19, .14);
+      box-shadow: 0 4px 12px rgba(6, 61, 19, .08);
+    }
+
+    .bandeira-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background-color: #fff;
+    }
+
+    .legenda-bandeira-revelada {
+      margin-top: 10px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--verde-escuro);
+      min-height: 26px;
+      text-align: center;
+    }
+
+    /* Ficha de Dica */
+    .ficha-dica {
+      background: var(--cinza-claro);
+      border-radius: 12px;
+      padding: 18px 20px;
+      border-left: 4px solid var(--govbr-azul);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      height: 100%;
+    }
+
+    .ficha-dica .dica-rotulo {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--govbr-azul);
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .ficha-dica .dica-texto {
+      font-size: .98rem;
+      color: var(--texto-principal);
+      line-height: 1.6;
+      font-weight: 500;
+    }
+
+    /* Botões Padrão IFAP */
+    .btn-ifap {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: .9rem;
+      font-weight: 700;
+      padding: 10px 22px;
+      border: 2px solid transparent;
+      border-radius: 999px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease, opacity .15s ease;
+    }
+
+    .btn-ifap:hover:not(:disabled) { transform: translateY(-1px); }
+    .btn-ifap:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .btn-ifap-solido {
+      background: var(--verde-if);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(47, 158, 65, .35);
+    }
+    .btn-ifap-solido:hover:not(:disabled) { background: var(--verde-escuro); }
+
+    .btn-ifap-azul {
+      background: var(--govbr-azul);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(19, 81, 180, .3);
+    }
+    .btn-ifap-azul:hover:not(:disabled) { background: #0c3d8a; }
+
+    .btn-ifap-contorno {
+      border: 2px solid var(--verde-if);
+      color: var(--verde-escuro);
+      background: transparent;
+    }
+    .btn-ifap-contorno:hover:not(:disabled) { background: rgba(47, 158, 65, .08); }
+
+    .btn-ifap-alerta {
+      background: var(--vermelho-alerta);
+      color: #fff;
+    }
+
+    /* Slots da Palavra */
+    .palavra-wrapper {
+      background: var(--cinza-claro);
+      border-radius: 14px;
+      padding: 22px 16px;
+      margin-bottom: 22px;
+      text-align: center;
+      border: 1px solid rgba(6, 61, 19, .06);
+    }
+
+    .palavra-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .letra-slot {
+      background: #fff;
+      border: 1px solid rgba(6, 61, 19, .15);
+      border-bottom: 4px solid var(--verde-escuro);
+      border-radius: 8px;
+      width: 36px;
+      height: 44px;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--verde-escuro);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    }
+
+    .letra-slot.espaco {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      width: 16px;
+    }
+
+    /* Teclado Virtual */
+    .teclado-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      justify-content: center;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .btn-tecla {
+      background-color: #fff;
+      color: var(--texto-principal);
+      border: 1px solid #cbd5e0;
+      border-bottom: 3px solid #a0aec0;
+      width: 42px;
+      height: 44px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all .12s ease;
+    }
+
+    .btn-tecla:hover:not(:disabled) {
+      background-color: var(--verde-if);
+      color: #fff;
+      border-color: var(--verde-escuro);
+      transform: translateY(-1px);
+    }
+
+    .btn-tecla:disabled {
+      background-color: #e2e8f0;
+      color: #a0aec0;
+      border-color: #cbd5e0;
+      cursor: not-allowed;
+      opacity: .65;
+    }
+
+    /* Controles exclusivos do Professor */
+    .controles-professor-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding-top: 8px;
+    }
+
+    /* ================= MODAIS PADRÃO IFAP ================= */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(6, 61, 19, 0.55);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 1050;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: #fff;
+      width: 100%;
+      max-width: 600px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(6, 61, 19, .32);
+      animation: popIn .25s ease;
+      max-height: 92vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.94); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-card-header {
+      background: linear-gradient(135deg, var(--verde-if) 0%, var(--verde-escuro) 55%, var(--verde-profundo) 100%);
+      color: #fff;
+      padding: 18px 24px;
+    }
+
+    .modal-card-header.alerta {
+      background: linear-gradient(135deg, #d9534f 0%, var(--vermelho-alerta) 100%);
+    }
+
+    .modal-card-header h2 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin: 0;
+    }
+
+    .modal-card-header p {
+      font-size: .85rem;
+      opacity: .9;
+      margin-top: 3px;
+    }
+
+    .modal-card-body {
+      padding: 22px 24px;
+      overflow-y: auto;
+    }
+
+    .form-grupo {
+      margin-bottom: 14px;
+      text-align: left;
+    }
+
+    .form-grupo label {
+      display: block;
+      font-size: .74rem;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--texto-suave);
+      margin-bottom: 5px;
+    }
+
+    .form-controle {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: .95rem;
+      border: 1px solid #cbd5e0;
+      border-radius: 10px;
+      color: var(--texto-principal);
+      background: #fff;
+      outline: none;
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+
+    .form-controle:focus {
+      border-color: var(--verde-if);
+      box-shadow: 0 0 0 3px rgba(47, 158, 65, .18);
+    }
+
+    .form-controle.campo-invalido {
+      border-color: var(--vermelho-alerta);
+      box-shadow: 0 0 0 3px rgba(194, 54, 22, .14);
+    }
+
+    .msg-validacao {
+      display: none;
+      background: rgba(194, 54, 22, .10);
+      color: var(--vermelho-alerta);
+      border-left: 4px solid var(--vermelho-alerta);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: .86rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    .msg-validacao.visivel {
+      display: block;
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .form-grid-escola {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 12px;
+    }
+
+    .qrcode-panel {
+      background: var(--cinza-claro);
+      border: 1px dashed var(--verde-if);
+      border-radius: 12px;
+      padding: 14px;
+      margin: 14px 0 18px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .qrcode-panel.aguardando {
+      border-color: #cbd5e0;
+      justify-content: center;
+      text-align: center;
+      padding: 18px;
+    }
+
+    .qrcode-panel #qrcode-display,
+    .qrcode-box-compartilhar {
+      background: #fff;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .qrcode-info {
+      text-align: left;
+      font-size: .85rem;
+      color: var(--texto-secundario);
+    }
+
+    .qrcode-info strong.codigo-destaque {
+      display: inline-block;
+      margin-top: 4px;
+      font-size: 1.05rem;
+      color: var(--verde-escuro);
+      background: rgba(47, 158, 65, .14);
+      padding: 2px 10px;
+      border-radius: 6px;
+    }
+
+    /* Caixa de Link para Alunos */
+    .link-copy-box {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .link-copy-input {
+      flex: 1;
+      padding: 9px 12px;
+      font-size: .84rem;
+      font-family: monospace;
+      background: #fff;
+      border: 1px solid #cbd5e0;
+      border-radius: 8px;
+      color: var(--texto-principal);
+      outline: none;
+    }
+
+    .btn-copiar-link {
+      background: var(--govbr-azul);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 9px 14px;
+      font-size: .82rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background-color .15s ease;
+    }
+
+    .btn-copiar-link:hover { background: #0c3d8a; }
+    .btn-copiar-link.copiado { background: var(--verde-if); }
+
+    /* Tabela Ranking */
+    .tabela-ranking {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 18px;
+      font-size: .92rem;
+    }
+
+    .tabela-ranking th {
+      background: var(--cinza-claro);
+      color: var(--texto-suave);
+      font-size: .74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .tabela-ranking td {
+      padding: 11px 12px;
+      border-bottom: 1px solid #edf2f7;
+      text-align: left;
+    }
+
+    .tabela-ranking tr:nth-child(1) td {
+      background: rgba(47, 158, 65, .09);
+      font-weight: 800;
+      color: var(--verde-escuro);
+    }
+
+    /* ================= FOOTER PADRÃO IFAP ================= */
+    .site-footer {
+      background: linear-gradient(135deg, var(--verde-if) 0%, var(--verde-escuro) 55%, var(--verde-profundo) 100%);
+      color: rgba(255, 255, 255, .92);
+      margin-top: auto;
+    }
+
+    .site-footer .footer-main {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 32px;
+      padding: 36px 0;
+      flex-wrap: wrap;
+    }
+
+    .site-footer .footer-logo-caixa {
+      background: #fff;
+      border-radius: 12px;
+      padding: 14px 20px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, .2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .site-footer .footer-logo-caixa img {
+      height: 110px;
+      width: auto;
+      display: block;
+    }
+
+    .site-footer .footer-sep {
+      width: 1px;
+      align-self: stretch;
+      background: rgba(255, 255, 255, .22);
+    }
+
+    .site-footer .footer-info {
+      flex: 1;
+      font-size: .88rem;
+      line-height: 1.75;
+      min-width: 260px;
+    }
+
+    .site-footer .footer-info strong {
+      display: block;
+      color: #fff;
+      font-size: .98rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .site-footer .footer-info a {
+      color: #fff;
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .site-footer .footer-info a:hover {
+      opacity: .85;
+    }
+
+    .site-footer .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, .16);
+      padding: 16px 0;
+      font-size: .8rem;
+      line-height: 1.55;
+      text-align: center;
+      opacity: .9;
+    }
+
+    /* ================= TEMA ESCURO ================= */
+    html[data-theme="escuro"] body { background-color: #101713; color: #f1f6f2; }
+    html[data-theme="escuro"] .sub-nav { background: #17201b; border-bottom-color: rgba(255,255,255,.08); }
+    html[data-theme="escuro"] .sub-nav a, html[data-theme="escuro"] .sub-nav button.link-nav { color: #7fd694; }
+    html[data-theme="escuro"] .sub-nav .sub-nav-atual { color: #9fb0a6; }
+    html[data-theme="escuro"] .secao-titulo { color: #f1f6f2; }
+    html[data-theme="escuro"] .card-ifap,
+    html[data-theme="escuro"] .modal-card { background: #1b2420; border-color: rgba(255,255,255,.1); color: #f1f6f2; }
+    html[data-theme="escuro"] .meta-item,
+    html[data-theme="escuro"] .ficha-dica,
+    html[data-theme="escuro"] .palavra-wrapper,
+    html[data-theme="escuro"] .qrcode-panel { background: #232f29; border-color: rgba(255,255,255,.08); }
+    html[data-theme="escuro"] .meta-valor,
+    html[data-theme="escuro"] .ficha-dica .dica-texto { color: #eaf0ec; }
+    html[data-theme="escuro"] .meta-rotulo { color: #9fb0a6; }
+    html[data-theme="escuro"] .letra-slot { background: #17201b; color: #7fd694; border-bottom-color: #45c95f; }
+    html[data-theme="escuro"] .btn-tecla { background: #232f29; color: #eaf0ec; border-color: #3a4a42; }
+    html[data-theme="escuro"] .form-controle,
+    html[data-theme="escuro"] .link-copy-input { background: #232f29; color: #eaf0ec; border-color: #3a4a42; }
+    html[data-theme="escuro"] .tabela-ranking th { background: #232f29; color: #9fb0a6; }
+    html[data-theme="escuro"] .tabela-ranking td { border-bottom-color: rgba(255,255,255,.08); }
+
+    /* ================= ALTO CONTRASTE ================= */
+    html[data-theme="contraste"] body { background: #000; color: #fff; }
+    html[data-theme="contraste"] .site-header,
+    html[data-theme="contraste"] .site-footer,
+    html[data-theme="contraste"] .modal-card-header { background: #000; border-bottom: 2px solid #fff; }
+    html[data-theme="contraste"] .site-footer { border-top: 2px solid #fff; }
+    html[data-theme="contraste"] .sub-nav { background: #000; border-bottom: 2px solid #fff; }
+    html[data-theme="contraste"] .sub-nav a, html[data-theme="contraste"] .sub-nav button.link-nav { color: #ffd400; text-decoration: underline; }
+    html[data-theme="contraste"] .card-ifap,
+    html[data-theme="contraste"] .modal-card,
+    html[data-theme="contraste"] .meta-item,
+    html[data-theme="contraste"] .ficha-dica,
+    html[data-theme="contraste"] .palavra-wrapper,
+    html[data-theme="contraste"] .qrcode-panel { background: #000; border: 2px solid #fff; box-shadow: none; }
+    html[data-theme="contraste"] .secao-titulo,
+    html[data-theme="contraste"] .meta-valor,
+    html[data-theme="contraste"] .dica-texto,
+    html[data-theme="contraste"] .meta-rotulo { color: #fff; }
+    html[data-theme="contraste"] .secao-titulo::before { background: #ffd400; }
+    html[data-theme="contraste"] .btn-ifap-solido,
+    html[data-theme="contraste"] .btn-header-pill { background: #ffd400; color: #000; border-color: #ffd400; }
+    html[data-theme="contraste"] .letra-slot { background: #000; color: #ffd400; border: 2px solid #ffd400; }
+    html[data-theme="contraste"] .btn-tecla { background: #000; color: #fff; border: 2px solid #fff; }
+    html[data-theme="contraste"] .btn-tecla:hover:not(:disabled) { background: #ffd400; color: #000; }
+
+    @media (max-width: 768px) {
+      .arena-superior { grid-template-columns: 1fr; }
+      .form-grid-2, .form-grid-escola { grid-template-columns: 1fr; }
+      .qrcode-panel { flex-direction: column; text-align: center; }
+      .qrcode-info { text-align: center; }
+      .site-footer .footer-sep { display: none; }
+      .site-footer .footer-main { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ÁUDIO DO FAUSTÃO ("ERROU!") COM FALLBACKS -->
+  <audio id="audio-faustao-errou" preload="auto">
+    <source src="audio/errou.mp3" type="audio/mpeg">
+    <source src="https://www.myinstants.com/media/sounds/errou_3.mp3" type="audio/mpeg">
+    <source src="https://www.myinstants.com/media/sounds/faustao-errou.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- HEADER PADRÃO IFAP -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <div class="brand">
+          <div class="brand-emblema">
+            <img src="img/logo-ifap.png" alt="Instituto Federal do Amapá" onerror="this.style.display='none'">
+          </div>
+          <div class="brand-text">
+            <span class="brand-sigla">Geografia do Brasil • Objeto de Aprendizagem</span>
+            <h1>Forca do Brasil</h1>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <!-- Seletor de Acessibilidade / Tema -->
+          <div class="theme-switch" role="group" aria-label="Tema de exibição">
+            <button type="button" class="theme-btn" data-tema-opcao="claro" aria-label="Tema claro" title="Tema Claro">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+            </button>
+            <button type="button" class="theme-btn" data-tema-opcao="escuro" aria-label="Tema escuro" title="Tema Escuro">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
+            <button type="button" class="theme-btn" data-tema-opcao="contraste" aria-label="Alto contraste" title="Alto Contraste">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 0 0 20z" fill="currentColor"/></svg>
+            </button>
+          </div>
+
+          <button type="button" class="btn-header-pill" onclick="abrirRankingAoVivo(false)">
+            🏆 Ranking da Sala
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- SUB-BARRA DE NAVEGAÇÃO -->
+  <div class="sub-nav">
+    <div class="container">
+      <div class="sub-nav-inner">
+        <div class="breadcrumb-links">
+          <button type="button" class="link-nav" onclick="abrirModalRegistro()">Configurar Sala</button>
+          <span class="sub-nav-sep">/</span>
+          <button type="button" class="link-nav" onclick="abrirPopupCompartilharSala()">🔗 Link e QR Code</button>
+          <span class="sub-nav-sep">/</span>
+          <button type="button" class="link-nav" onclick="abrirPainelProfessor()" style="color: var(--govbr-azul);">👨‍🏫 Painel do Professor</button>
+          <span class="sub-nav-sep">/</span>
+          <span class="sub-nav-atual">Estados do Brasil</span>
+        </div>
+        <span class="badge-sala-topo">SALA: <span id="display-codigo-sala">AGUARDANDO</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="page-content">
+    <div class="container">
+
+      <h2 class="secao-titulo" id="titulo-secao-dados">Dados da Turma e Desempenho</h2>
+
+      <!-- META GRID DE INFORMAÇÕES DA SALA -->
+      <div class="turma-meta">
+        <div class="meta-item">
+          <span class="meta-rotulo">Escola / UF</span>
+          <span class="meta-valor" id="display-escola">---</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-rotulo">Ano / Turma</span>
+          <span class="meta-valor" id="display-turma">---</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-rotulo">Disciplina</span>
+          <span class="meta-valor" id="display-disciplina">---</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-rotulo">Professor(a)</span>
+          <span class="meta-valor" id="display-professora">---</span>
+        </div>
+        <div class="meta-item destaque-verde" id="box-meta-equipe">
+          <span class="meta-rotulo" id="rotulo-meta-equipe">Equipe / Jogador</span>
+          <span class="meta-valor" id="nome-equipe-display">---</span>
+        </div>
+        <div class="meta-item destaque-azul" id="box-meta-pontos">
+          <span class="meta-rotulo">Pontuação Atual</span>
+          <span class="meta-valor"><span id="pontos-atuais">0</span> pts</span>
+        </div>
+        <div class="meta-item destaque-alerta" id="box-meta-tempo">
+          <span class="meta-rotulo">Tempo Restante</span>
+          <span class="meta-valor" id="tempo-display">30s</span>
+        </div>
+      </div>
+
+      <h2 class="secao-titulo" id="titulo-secao-arena">Desafio das Bandeiras do Brasil</h2>
+
+      <!-- CARD PRINCIPAL DO JOGO / GABARITO DO PROFESSOR -->
+      <div class="card-ifap">
+        <div class="rodada-header">
+          <div>
+            <span class="pill-status" id="nivel-display">Nível 1</span>
+            <span style="margin-left: 8px; font-weight: 700; font-size: .9rem; color: var(--texto-secundario);" id="progresso-rodada">Bandeira 1 de 7</span>
+          </div>
+          <span class="pill-tentativas" id="badge-tentativas">Tentativas restantes: <span id="tentativas">6</span></span>
+          <span class="pill-professor" id="badge-modo-professor" style="display: none;">👨‍🏫 Visão do Professor (Gabarito Completo)</span>
+        </div>
+
+        <!-- BANDEIRA + FICHA DE DICA -->
+        <div class="arena-superior">
+          <div class="bandeira-box">
+            <div class="bandeira-frame">
+              <img id="img-bandeira" class="bandeira-img" src="" alt="Bandeira do estado">
+            </div>
+            <div class="legenda-bandeira-revelada" id="legenda-bandeira"></div>
+          </div>
+
+          <div class="ficha-dica">
+            <div>
+              <span class="dica-rotulo">Dica Geográfica e Histórica</span>
+              <p class="dica-texto" id="texto-dica">Carregando dica do estado...</p>
+            </div>
+            <div id="area-botao-dica">
+              <button type="button" class="btn-ifap btn-ifap-contorno" id="btn-dica-extra" onclick="revelarLetraDica()">
+                💡 Revelar 1 Letra (-3 pts)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SLOTS DA PALAVRA (PARA O PROFESSOR MOSTRA A PALAVRA COMPLETA) -->
+        <div class="palavra-wrapper">
+          <div class="palavra-container" id="palavra-container"></div>
+        </div>
+
+        <!-- TECLADO VIRTUAL (APENAS PARA OS ALUNOS) -->
+        <div class="teclado-container" id="teclado-container"></div>
+
+        <!-- CONTROLES DE NAVEGAÇÃO (APENAS PARA O PROFESSOR) -->
+        <div class="controles-professor-box" id="controles-professor" style="display: none;">
+          <button type="button" class="btn-ifap btn-ifap-contorno" id="btn-prof-anterior" onclick="navegarBandeiraProfessor(-1)">
+            ⬅ Bandeira Anterior
+          </button>
+          <button type="button" class="btn-ifap btn-ifap-azul" onclick="abrirRankingAoVivo(false)">
+            🏆 Acompanhar Ranking da Turma
+          </button>
+          <button type="button" class="btn-ifap btn-ifap-solido" id="btn-prof-proxima" onclick="navegarBandeiraProfessor(1)">
+            Próxima Bandeira ➡
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER PADRÃO IFAP -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-main">
+        <div class="footer-logo-caixa">
+          <img src="img/logo-ifap.png" alt="Marca vertical do Instituto Federal do Amapá" onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/5/54/Instituto_Federal_do_Amap%C3%A1_-_Marca_Vertical_2015.svg';">
+        </div>
+        <div class="footer-sep" aria-hidden="true"></div>
+        <div class="footer-info">
+          <strong>Instituto Federal de Educação, Ciência e Tecnologia do Amapá (IFAP)</strong>
+          Curso de Pós-Graduação Lato Sensu em Informática na Educação<br>
+          Acadêmica: Ema Miranda • Recurso Educacional Digital: Forca Amapaense<br>
+          Portal institucional: <a href="https://ifap.edu.br" target="_blank" rel="noopener noreferrer">ifap.edu.br</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        Forca Amapaense • Desenvolvido como ferramenta pedagógica regional, ainda em fase de teste. Proibido o uso comercial ou lucrativo sem autorização expressa. Protegido pelas Leis Brasileiras nº 9.609/98 e nº 9.610/98, Art. 184 do Código Penal e Tratados Internacionais (Convenção de Berna e TRIPS)
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL 1: CRIAR SALA DE AULA (PROFESSOR) / ENTRAR NA SALA (ALUNO) -->
+  <div class="modal-overlay active" id="modal-registro">
+    <div class="modal-card">
+      <div class="modal-card-header">
+        <h2 id="titulo-modal-registro">Criar Sala de Aula (Professor)</h2>
+        <p id="subtitulo-modal-registro">Preencha os dados da turma para gerar o código, o link e o QR Code dos alunos.</p>
+      </div>
+      <div class="modal-card-body">
+        <div class="msg-validacao" id="msg-validacao-form"></div>
+
+        <div id="campos-professora">
+          <div class="form-grid-escola">
+            <div class="form-grupo">
+              <label for="input-escola">Nome da Escola *</label>
+              <input type="text" id="input-escola" class="form-controle" placeholder="Digite o nome da sua escola..." oninput="verificarPreenchimentoSala()">
+            </div>
+
+            <div class="form-grupo">
+              <label for="select-uf">Estado (UF) *</label>
+              <select id="select-uf" class="form-controle" onchange="verificarPreenchimentoSala()">
+                <option value="">UF...</option>
+                <option value="AC">AC - Acre</option>
+                <option value="AL">AL - Alagoas</option>
+                <option value="AP">AP - Amapá</option>
+                <option value="AM">AM - Amazonas</option>
+                <option value="BA">BA - Bahia</option>
+                <option value="CE">CE - Ceará</option>
+                <option value="DF">DF - Distrito Federal</option>
+                <option value="ES">ES - Espírito Santo</option>
+                <option value="GO">GO - Goiás</option>
+                <option value="MA">MA - Maranhão</option>
+                <option value="MT">MT - Mato Grosso</option>
+                <option value="MS">MS - Mato Grosso do Sul</option>
+                <option value="MG">MG - Minas Gerais</option>
+                <option value="PA">PA - Pará</option>
+                <option value="PB">PB - Paraíba</option>
+                <option value="PR">PR - Paraná</option>
+                <option value="PE">PE - Pernambuco</option>
+                <option value="PI">PI - Piauí</option>
+                <option value="RJ">RJ - Rio de Janeiro</option>
+                <option value="RN">RN - Rio Grande do Norte</option>
+                <option value="RS">RS - Rio Grande do Sul</option>
+                <option value="RO">RO - Rondônia</option>
+                <option value="RR">RR - Roraima</option>
+                <option value="SC">SC - Santa Catarina</option>
+                <option value="SP">SP - São Paulo</option>
+                <option value="SE">SE - Sergipe</option>
+                <option value="TO">TO - Tocantins</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-grupo">
+              <label for="input-turma">Ano / Turma *</label>
+              <input type="text" id="input-turma" class="form-controle" placeholder="Ex: 7º Ano A" oninput="verificarPreenchimentoSala()">
+            </div>
+
+            <div class="form-grupo">
+              <label for="input-professora">Nome do(a) Professor(a) *</label>
+              <input type="text" id="input-professora" class="form-controle" placeholder="Ex: Profª. Maria Silva" oninput="verificarPreenchimentoSala()">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-grupo">
+              <label for="select-disciplina">Disciplina *</label>
+              <select id="select-disciplina" class="form-controle" onchange="verificarPreenchimentoSala()">
+                <option value="">Selecione a disciplina...</option>
+                <option value="Geografia">Geografia</option>
+                <option value="História e Geografia">História e Geografia</option>
+                <option value="História">História</option>
+                <option value="Estudos Sociais / Outra">Estudos Sociais / Outra</option>
+              </select>
+            </div>
+
+            <div class="form-grupo">
+              <label for="select-nivel">Nível da Partida (Regiões) *</label>
+              <select id="select-nivel" class="form-controle" onchange="verificarPreenchimentoSala()">
+                <option value="">Selecione o nível...</option>
+                <option value="1">Nível 1: Região Norte (7 estados)</option>
+                <option value="2">Nível 2: Região Nordeste (9 estados)</option>
+                <option value="3">Nível 3: Centro-Oeste e Sul (7 UF)</option>
+                <option value="4">Nível 4: Região Sudeste (4 estados)</option>
+                <option value="todos">Todos os Estados (27 UF)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div id="info-sala-aluno" style="display:none; background:rgba(47, 158, 65, .12); color:var(--verde-escuro); padding:10px 14px; border-radius:10px; margin-bottom:14px; font-size:.88rem;">
+          <strong>Nível definido pelo(a) professor(a):</strong> <span id="badge-nivel-aluno">Nível 1</span>
+        </div>
+
+        <!-- CAMPO DE EQUIPE/ALUNO (EXIBIDO APENAS QUANDO O ALUNO ENTRA PELO LINK/QR CODE) -->
+        <div class="form-grupo" id="grupo-nome-equipe" style="display: none;">
+          <label for="input-nome-equipe">Nome do Aluno ou da Equipe *</label>
+          <input type="text" id="input-nome-equipe" class="form-controle" placeholder="Ex: Equipe Brasil / João Silva">
+        </div>
+
+        <!-- PRÉVIA DO QR CODE NO FORMULÁRIO -->
+        <div class="qrcode-panel aguardando" id="box-qrcode-aguardando">
+          <div style="font-size:.86rem; color:var(--texto-suave);">
+            🔒 Preencha todos os campos acima para gerar o <strong>Código da Sala</strong>, o <strong>Link</strong> e o <strong>QR Code</strong> dos alunos.
+          </div>
+        </div>
+
+        <div class="qrcode-panel" id="box-qrcode" style="display: none;">
+          <div id="qrcode-display"></div>
+          <div class="qrcode-info">
+            <strong>Sala Pronta: <span class="codigo-destaque" id="codigo-gerado-texto">----</span></strong>
+            <p style="margin-top:4px;">Ao clicar no botão abaixo, abrirá o pop-up com o <strong>Link Direto</strong> e o <strong>QR Code</strong> para os alunos, e você terá acesso ao gabarito completo.</p>
+          </div>
+        </div>
+
+        <button type="button" class="btn-ifap btn-ifap-solido" id="btn-iniciar-partida" style="width: 100%;" onclick="iniciarSessao()">
+          Gerar Sala e Exibir Acesso dos Alunos
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2 (POP-UP): LINK E QR CODE PARA ACESSO DOS ALUNOS -->
+  <div class="modal-overlay" id="modal-compartilhar-sala">
+    <div class="modal-card">
+      <div class="modal-card-header">
+        <h2>📲 Sala Criada com Sucesso!</h2>
+        <p>Compartilhe o link ou projete o QR Code abaixo para os alunos entrarem na sala.</p>
+      </div>
+      <div class="modal-card-body" style="text-align: center;">
+        <div style="margin-bottom: 14px;">
+          <span class="pill-status" style="font-size: .85rem; padding: 6px 16px;">
+            Código da Sala: <strong id="popup-codigo-sala">----</strong>
+          </span>
+        </div>
+
+        <!-- QR CODE AMPLIADO -->
+        <div class="qrcode-box-compartilhar" id="popup-qrcode-display" style="margin: 0 auto 14px;"></div>
+
+        <p style="font-size: .88rem; color: var(--texto-secundario); margin-bottom: 14px;">
+          Aponte a câmera do celular para o QR Code ou envie o link direto pelo WhatsApp / Google Sala de Aula:
+        </p>
+
+        <!-- LINK DIRETO COM BOTÃO DE COPIAR -->
+        <div class="form-grupo" style="text-align: left;">
+          <label for="input-link-alunos">Link de Acesso dos Alunos</label>
+          <div class="link-copy-box">
+            <input type="text" id="input-link-alunos" class="link-copy-input" readonly onclick="this.select()">
+            <button type="button" class="btn-copiar-link" id="btn-copiar-link-alunos" onclick="copiarLinkAlunos()">
+              📋 Copiar Link
+            </button>
+          </div>
+        </div>
+
+        <div style="margin-top: 20px;">
+          <button type="button" class="btn-ifap btn-ifap-solido" style="width: 100%;" onclick="fecharPopupCompartilharEVerGabarito()">
+            👨‍🏫 Ir para o Painel de Bandeiras e Ranking
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE RANKING -->
+  <div class="modal-overlay" id="modal-ranking">
+    <div class="modal-card">
+      <div class="modal-card-header">
+        <h2 id="titulo-modal-ranking">🏆 Ranking da Sala: <span id="ranking-codigo-sala"></span></h2>
+        <p id="subtitulo-modal-ranking">Classificação atualizada em tempo real</p>
+      </div>
+      <div class="modal-card-body">
+        <table class="tabela-ranking">
+          <thead>
+            <tr>
+              <th>Posição</th>
+              <th>Aluno / Equipe</th>
+              <th>Pontuação</th>
+            </tr>
+          </thead>
+          <tbody id="corpo-tabela-ranking">
+            <tr><td colspan="3" style="text-align:center;">Carregando pontuações...</td></tr>
+          </tbody>
+        </table>
+
+        <div style="display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap;">
+          <button type="button" class="btn-ifap btn-ifap-contorno" onclick="carregarDadosRanking()">🔄 Atualizar</button>
+          <button type="button" class="btn-ifap btn-ifap-solido" id="btn-fechar-ranking" onclick="fecharRanking()">Voltar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE VITÓRIA (ALUNO) -->
+  <div class="modal-overlay" id="modal-vitoria">
+    <div class="modal-card">
+      <div class="modal-card-header">
+        <h2>🎉 Estado Identificado!</h2>
+        <p>Excelente trabalho, <span id="vitoria-equipe-nome"></span>!</p>
+      </div>
+      <div class="modal-card-body" style="text-align: center;">
+        <p style="font-size: 1.05rem; margin-bottom: 18px;">
+          Você acertou a bandeira de <strong><span id="vitoria-municipio-nome"></span></strong> e somou <strong>+<span id="pontos-ganhos">0</span> pontos</strong>!
+        </p>
+        <button type="button" class="btn-ifap btn-ifap-solido" id="btn-proximo-municipio" onclick="avancarProximaBandeira()">
+          Próxima Bandeira
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE PAINEL DO PROFESSOR -->
+  <div class="modal-overlay" id="modal-painel-professor">
+    <div class="modal-card" style="max-width: 680px;">
+      <div class="modal-card-header" style="background: linear-gradient(135deg, #1351b4 0%, #0c3d8a 100%);">
+        <h2>👨‍🏫 Painel de Controle do Professor</h2>
+        <p>Acompanhe todas as salas criadas pelo país e consulte o ranking das turmas.</p>
+      </div>
+      <div class="modal-card-body">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+          <strong>Salas Registradas no Sistema:</strong>
+          <button type="button" class="btn-ifap btn-ifap-contorno" style="padding: 6px 14px; font-size: .82rem;" onclick="carregarListaSalasProfessor()">🔄 Atualizar Lista</button>
+        </div>
+
+        <div id="lista-salas-container" style="max-height: 280px; overflow-y: auto; margin-bottom: 18px; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px; background: var(--cinza-claro);">
+          <p style="text-align: center; color: var(--texto-suave); padding: 20px;">Clique em atualizar para carregar as salas ativas.</p>
+        </div>
+
+        <div style="display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap;">
+          <button type="button" class="btn-ifap btn-ifap-solido" onclick="fecharPainelProfessor()">Fechar Painel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE DERROTA / TEMPO ESGOTADO (ALUNO) -->
+  <div class="modal-overlay" id="modal-derrota">
+    <div class="modal-card">
+      <div class="modal-card-header alerta">
+        <h2 id="titulo-derrota">Fim das tentativas</h2>
+        <p>Não foi desta vez, mas continue para a próxima bandeira.</p>
+      </div>
+      <div class="modal-card-body" style="text-align: center;">
+        <p id="mensagem-derrota" style="font-size: 1.05rem; margin-bottom: 18px;">
+          A bandeira pertencia ao estado de <strong id="municipio-revelado"></strong>.
+        </p>
+        <button type="button" class="btn-ifap btn-ifap-alerta" id="btn-avancar-derrota" onclick="avancarProximaBandeira()">
+          Próxima Bandeira
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const FIREBASE_URL = "https://forca-brasil-183ad-default-rtdb.firebaseio.com";
+
+    // SELETOR DE TEMAS (CLARO / ESCURO / ALTO CONTRASTE)
+    (function () {
+      var raiz = document.documentElement;
+      function refletir(t) {
+        var botoes = document.querySelectorAll('[data-tema-opcao]');
+        for (var i = 0; i < botoes.length; i++) {
+          botoes[i].setAttribute('aria-pressed', botoes[i].getAttribute('data-tema-opcao') === t ? 'true' : 'false');
+        }
+      }
+      function aplicar(t) {
+        raiz.setAttribute('data-theme', t);
+        try { localStorage.setItem('forca-brasil-tema', t); } catch (e) {}
+        refletir(t);
+      }
+      refletir(raiz.getAttribute('data-theme') || 'claro');
+      document.addEventListener('click', function (e) {
+        var alvo = e.target.closest && e.target.closest('[data-tema-opcao]');
+        if (alvo) { aplicar(alvo.getAttribute('data-tema-opcao')); }
+      });
+    })();
+
+    // BASE DE DADOS DOS 27 ESTADOS DO BRASIL (DIVIDIDOS POR REGIÕES NOS 4 NÍVEIS)
+    const todosDesafios = [
+      // NÍVEL 1: REGIÃO NORTE (7 estados)
+      { nivel: 1, pontos: 10, tempo: 30, municipio: "ACRE", nomeExibicao: "Acre", dica: "Estado localizado no extremo noroeste, famoso pela borracha e pela história de Chico Mendes.", bandeira: "img/ac.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/4/4c/Bandeira_do_Acre.svg" },
+      { nivel: 1, pontos: 10, tempo: 30, municipio: "AMAPA", nomeExibicao: "Amapá", dica: "Estado cortado pela Linha do Equador, banhado pelo Rio Amazonas e com rica biodiversidade.", bandeira: "img/ap.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/0/0b/Bandeira_do_Amap%C3%A1.svg" },
+      { nivel: 1, pontos: 10, tempo: 30, municipio: "AMAZONAS", nomeExibicao: "Amazonas", dica: "O maior estado brasileiro em extensão territorial, cortado pelo Rio Amazonas e coberto pela floresta tropical.", bandeira: "img/am.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/6/6b/Bandeira_do_Amazonas.svg" },
+      { nivel: 1, pontos: 10, tempo: 30, municipio: "PARA", nomeExibicao: "Pará", dica: "Conhecido pela cultura marajoara, o Círio de Nazaré e a culinária rica em açaí e tucupi.", bandeira: "img/pa.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/0/02/Bandeira_do_Par%C3%A1.svg" },
+      { nivel: 1, pontos: 10, tempo: 30, municipio: "RONDONIA", nomeExibicao: "Rondônia", dica: "Estado criado em 1981, com forte economia baseada na agropecuária e rica história ferroviária (Estrada de Ferro Madeira-Mamoré).", bandeira: "img/ro.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Bandeira_de_Rond%C3%B4nia.svg" },
+      { nivel: 1, pontos: 10, tempo: 30, municipio: "RORAIMA", nomeExibicao: "Roraima", dica: "O estado mais ao norte do país, conhecido pelos imponentes tepuis como o Monte Roraima.", bandeira: "img/rr.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/9/98/Bandeira_de_Roraima.svg" },
+      { nivel: 1, pontos: 10, tempo: 30, municipio: "TOCANTINS", nomeExibicao: "Tocantins", dica: "O estado mais jovem da federação, criado em 1988, com belas paisagens no Jalapão.", bandeira: "img/to.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/f/ff/Bandeira_do_Tocantins.svg" },
+
+      // NÍVEL 2: REGIÃO NORDESTE (9 estados)
+      { nivel: 2, pontos: 20, tempo: 35, municipio: "ALAGOAS", nomeExibicao: "Alagoas", dica: "Conhecido como o 'Caribe brasileiro' devido às suas praias paradisíacas e águas cristalinas.", bandeira: "img/al.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/8/88/Bandeira_de_Alagoas.svg" },
+      { nivel: 2, pontos: 20, tempo: 35, municipio: "BAHIA", nomeExibicao: "Bahia", dica: "Primeira capital do país, famosa pela rica herança afro-brasileira, axé, acarajé e belas praias.", bandeira: "img/ba.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/2/28/Bandeira_da_Bahia.svg" },
+      { nivel: 2, pontos: 20, tempo: 35, municipio: "CEARA", nomeExibicao: "Ceará", dica: "Terra do humor, do sol forte, das dunas de Jericoacoara e de praias deslumbrantes.", bandeira: "img/ce.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/2/2e/Bandeira_do_Cear%C3%A1.svg" },
+      { nivel: 2, pontos: 20, tempo: 35, municipio: "MARANHAO", nomeExibicao: "Maranhão", dica: "Abriga os impressionantes lençóis de dunas do Parque Nacional dos Lençóis Maranhenses.", bandeira: "img/ma.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/b/b3/Bandeira_do_Maranh%C3%A3o.svg" },
+      { nivel: 2, pontos: 20, tempo: 35, municipio: "PARAIBA", nomeExibicao: "Paraíba", dica: "Onde o sol nasce primeiro nas Américas, na Ponta do Seixas em João Pessoa.", bandeira: "img/pb.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/b/bb/Bandeira_da_Para%C3%ADba.svg" },
+      { nivel: 2, pontos: 20, tempo: 35, municipio: "PERNAMBUCO", nomeExibicao: "Pernambuco", dica: "Terra do frevo, do maracatu, do arquipélago de Fernando de Noronha e rica história colonial.", bandeira: "img/pe.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/5/59/Bandeira_de_Pernambuco.svg" },
+      { nivel: 2, pontos: 20, tempo: 35, municipio: "PIAUI", nomeExibicao: "Piauí", dica: "Possui o Parque Nacional Serra da Capivara, berço de importantes sítios arqueológicos das Américas.", bandeira: "img/pi.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/3/33/Bandeira_do_Piau%C3%AD.svg" },
+      { nivel: 2, pontos: 20, tempo: 35, municipio: "RIO GRANDE DO NORTE", nomeExibicao: "Rio Grande do Norte", dica: "Famoso pela produção de sal marinho, dunas e pelo forte turismo na região de Natal.", bandeira: "img/rn.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/3/30/Bandeira_do_Rio_Grande_do_Norte.svg" },
+      { nivel: 2, pontos: 20, tempo: 35, municipio: "SERGIPE", nomeExibicao: "Sergipe", dica: "O menor estado brasileiro em extensão territorial, localizado na Região Nordeste.", bandeira: "img/se.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/b/be/Bandeira_de_Sergipe.svg" },
+
+      // NÍVEL 3: CENTRO-OESTE E SUL (7 estados/DF)
+      { nivel: 3, pontos: 30, tempo: 40, municipio: "DISTRITO FEDERAL", nomeExibicao: "Distrito Federal", dica: "Sede do governo federal e da capital do país, planejada por Lúcio Costa e Oscar Niemeyer.", bandeira: "img/df.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/3/3c/Bandeira_do_Distrito_Federal_%28Brasil%29.svg" },
+      { nivel: 3, pontos: 30, tempo: 40, municipio: "GOIAS", nomeExibicao: "Goiás", dica: "Conhecido pelo Cerrado, cidades históricas como Goiás Velho e forte agronegócio.", bandeira: "img/go.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/b/be/Bandeira_de_Goi%C3%A1s.svg" },
+      { nivel: 3, pontos: 30, tempo: 40, municipio: "MATO GROSSO", nomeExibicao: "Mato Grosso", dica: "Abriga a Chapada dos Guimarães e parte do Pantanal e da Floresta Amazônica.", bandeira: "img/mt.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/0/0b/Bandeira_de_Mato_Grosso.svg" },
+      { nivel: 3, pontos: 30, tempo: 40, municipio: "MATO GROSSO DO SUL", nomeExibicao: "Mato Grosso do Sul", dica: "Famoso pelas belezas naturais de Bonito e pela rica fauna do Pantanal.", bandeira: "img/ms.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/c/c1/Bandeira_de_Mato_Grosso_do_Sul.svg" },
+      { nivel: 3, pontos: 30, tempo: 40, municipio: "PARANA", nomeExibicao: "Paraná", dica: "Abriga as famosas Cataratas do Iguaçu e uma forte colonização europeia na região sul.", bandeira: "img/pr.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/9/93/Bandeira_do_Paran%C3%A1.svg" },
+      { nivel: 3, pontos: 30, tempo: 40, municipio: "RIO GRANDE DO SUL", nomeExibicao: "Rio Grande do Sul", dica: "O estado mais ao sul, famoso pela cultura gaúcha, chimarrão e pampas.", bandeira: "img/rs.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/6/63/Bandeira_do_Rio_Grande_do_Sul.svg" },
+      { nivel: 3, pontos: 30, tempo: 40, municipio: "SANTA CATARINA", nomeExibicao: "Santa Catarina", dica: "Conhecido pelas praias deslumbrantes, colonização alemã (Oktoberfest) e o polo industrial de Blumenau e Joinville.", bandeira: "img/sc.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/1/1a/Bandeira_de_Santa_Catarina.svg" },
+
+      // NÍVEL 4: REGIÃO SUDESTE (4 estados)
+      { nivel: 4, pontos: 40, tempo: 45, municipio: "ESPIRITO SANTO", nomeExibicao: "Espírito Santo", dica: "Famoso pela culinária da moqueca capixaba e belas praias litorâneas.", bandeira: "img/es.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/1/12/Bandeira_do_Esp%C3%ADrito_Santo.svg" },
+      { nivel: 4, pontos: 40, tempo: 45, municipio: "MINAS GERAIS", nomeExibicao: "Minas Gerais", dica: "Terra do pão de queijo, do ouro colonial de Ouro Preto, das montanhas e de rica culinária.", bandeira: "img/mg.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/f/f4/Bandeira_de_Minas_Gerais.svg" },
+      { nivel: 4, pontos: 40, tempo: 45, municipio: "RIO DE JANEIRO", nomeExibicao: "Rio de Janeiro", dica: "Famoso internacionalmente pelo Cristo Redentor, Pão de Açúcar e o Carnaval carioca.", bandeira: "img/rj.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/7/73/Bandeira_do_estado_do_Rio_de_Janeiro.svg" },
+      { nivel: 4, pontos: 40, tempo: 45, municipio: "SAO PAULO", nomeExibicao: "São Paulo", dica: "O estado mais populoso e motor econômico do Brasil, com forte centralidade financeira.", bandeira: "img/sp.svg", bandeiraFallback: "https://upload.wikimedia.org/wikipedia/commons/5/54/Bandeira_do_estado_de_S%C3%A3o_Paulo.svg" }
+    ];
+
+    let desafiosDaPartida = [];
+    let indiceAtual = 0;
+    let letrasAdivinhadas = [];
+    let erros = 0;
+    const maxErros = 6;
+    let rodadaEncerrada = false;
+    let jogoFinalizado = false;
+
+    // CONTROLE DE PAPEL (PROFESSOR vs ALUNO)
+    let isModoProfessor = true;
+
+    let tempoRestante = 30;
+    let temporizadorInterval = null;
+    let avancoAutomaticoTimeout = null;
+
+    let nomeEscola = "";
+    let ufEscola = "";
+    let nomeTurma = "";
+    let nomeProfessora = "";
+    let disciplinaSelecionada = "";
+    let nivelSelecionado = "";
+    let nomeEquipe = "";
+    let codigoSala = "";
+    let salaGerada = false;
+    let idJogadorUnico = "jog_" + Math.random().toString(36).substr(2, 9);
+    let pontuacaoAtual = 0;
+
+    function filtrarDesafiosPorNivel(nivel) {
+      if (nivel === "todos") {
+        desafiosDaPartida = [...todosDesafios];
+      } else {
+        const numNivel = parseInt(nivel, 10) || 1;
+        desafiosDaPartida = todosDesafios.filter(d => d.nivel === numNivel);
+      }
+      indiceAtual = 0;
+    }
+
+    function obterUrlAcessoAlunos() {
+      return window.location.href.split('?')[0] + "?sala=" + codigoSala;
+    }
+
+    function configurarInterfacePorPapel() {
+      if (isModoProfessor) {
+        // Visão do Professor (Anfitrião / Gabarito)
+        document.getElementById('titulo-secao-dados').innerText = "Dados da Sala Criada (Modo Professor)";
+        document.getElementById('titulo-secao-arena').innerText = "Gabarito Visual das Bandeiras da Partida";
+        document.getElementById('rotulo-meta-equipe').innerText = "Perfil de Acesso";
+        document.getElementById('nome-equipe-display').innerText = "Professor(a) • Anfitrião";
+        
+        document.getElementById('box-meta-pontos').style.display = "none";
+        document.getElementById('box-meta-tempo').style.display = "none";
+        document.getElementById('badge-tentativas').style.display = "none";
+        document.getElementById('badge-modo-professor').style.display = "inline-block";
+        document.getElementById('area-botao-dica').style.display = "none";
+        document.getElementById('teclado-container').style.display = "none";
+        document.getElementById('controles-professor').style.display = "flex";
+      } else {
+        // Visão do Aluno (Jogador)
+        document.getElementById('titulo-secao-dados').innerText = "Dados da Turma e Desempenho da Equipe";
+        document.getElementById('titulo-secao-arena').innerText = "Desafio das Bandeiras do Brasil";
+        document.getElementById('rotulo-meta-equipe').innerText = "Equipe / Jogador";
+        document.getElementById('nome-equipe-display').innerText = nomeEquipe;
+        
+        document.getElementById('box-meta-pontos').style.display = "block";
+        document.getElementById('box-meta-tempo').style.display = "block";
+        document.getElementById('badge-tentativas').style.display = "inline-block";
+        document.getElementById('badge-modo-professor').style.display = "none";
+        document.getElementById('area-botao-dica').style.display = "block";
+        document.getElementById('teclado-container').style.display = "flex";
+        document.getElementById('controles-professor').style.display = "none";
+      }
+    }
+
+    function verificarParametrosURL() {
+      const params = new URLSearchParams(window.location.search);
+      const salaUrl = params.get('sala');
+
+      if (salaUrl) {
+        // É ALUNO entrando pelo QR Code ou Link
+        isModoProfessor = false;
+        codigoSala = salaUrl;
+        salaGerada = true;
+        document.getElementById('codigo-gerado-texto').innerText = codigoSala;
+        document.getElementById('display-codigo-sala').innerText = codigoSala;
+        
+        document.getElementById('titulo-modal-registro').innerText = `Entrar na Sala ${codigoSala}`;
+        document.getElementById('subtitulo-modal-registro').innerText = "Informe o nome da sua equipe ou seu nome completo para iniciar.";
+        document.getElementById('campos-professora').style.display = "none";
+        document.getElementById('grupo-nome-equipe').style.display = "block";
+        document.getElementById('box-qrcode').style.display = "none";
+        document.getElementById('box-qrcode-aguardando').style.display = "none";
+        document.getElementById('info-sala-aluno').style.display = "block";
+        document.getElementById('btn-iniciar-partida').innerText = "Iniciar Partida";
+
+        buscarInfoSalaFirebase();
+      } else {
+        // É PROFESSOR criando a sala
+        isModoProfessor = true;
+        document.getElementById('grupo-nome-equipe').style.display = "none";
+      }
+    }
+
+    function camposProfessorCompletos() {
+      const escola = document.getElementById('input-escola').value.trim();
+      const uf = document.getElementById('select-uf').value.trim();
+      const turma = document.getElementById('input-turma').value.trim();
+      const prof = document.getElementById('input-professora').value.trim();
+      const disc = document.getElementById('select-disciplina').value.trim();
+      const nivel = document.getElementById('select-nivel').value.trim();
+
+      return escola !== "" && uf !== "" && turma !== "" && prof !== "" && disc !== "" && nivel !== "";
+    }
+
+    function verificarPreenchimentoSala() {
+      if (!isModoProfessor) return;
+
+      const boxAguardando = document.getElementById('box-qrcode-aguardando');
+      const boxQR = document.getElementById('box-qrcode');
+      const msgValidacao = document.getElementById('msg-validacao-form');
+
+      if (camposProfessorCompletos()) {
+        msgValidacao.classList.remove('visivel');
+        limparDestaquesInvalidos();
+
+        if (!salaGerada) {
+          gerarCodigoSala();
+          salaGerada = true;
+        }
+        boxAguardando.style.display = "none";
+        boxQR.style.display = "flex";
+      } else {
+        boxAguardando.style.display = "flex";
+        boxQR.style.display = "none";
+      }
+    }
+
+    function gerarCodigoSala() {
+      codigoSala = "BR-" + Math.floor(1000 + Math.random() * 9000);
+      document.getElementById('codigo-gerado-texto').innerText = codigoSala;
+      document.getElementById('display-codigo-sala').innerText = codigoSala;
+
+      const containerQR = document.getElementById('qrcode-display');
+      containerQR.innerHTML = '';
+      
+      const urlAcesso = obterUrlAcessoAlunos();
+      new QRCode(containerQR, {
+        text: urlAcesso,
+        width: 95,
+        height: 95
+      });
+    }
+
+    function abrirPopupCompartilharSala() {
+      if (!salaGerada || !codigoSala) {
+        abrirModalRegistro();
+        const msgValidacao = document.getElementById('msg-validacao-form');
+        msgValidacao.innerText = "⚠️ Preencha todos os campos da sala primeiro para gerar o link e o QR Code.";
+        msgValidacao.classList.add('visivel');
+        return;
+      }
+
+      pararCronometro();
+
+      const urlAcesso = obterUrlAcessoAlunos();
+      document.getElementById('popup-codigo-sala').innerText = codigoSala;
+      document.getElementById('input-link-alunos').value = urlAcesso;
+
+      const popupQR = document.getElementById('popup-qrcode-display');
+      popupQR.innerHTML = '';
+      new QRCode(popupQR, {
+        text: urlAcesso,
+        width: 170,
+        height: 170
+      });
+
+      const btnCopiar = document.getElementById('btn-copiar-link-alunos');
+      btnCopiar.innerText = "📋 Copiar Link";
+      btnCopiar.classList.remove('copiado');
+
+      document.getElementById('modal-compartilhar-sala').classList.add('active');
+    }
+
+    function copiarLinkAlunos() {
+      const inputLink = document.getElementById('input-link-alunos');
+      inputLink.select();
+      inputLink.setSelectionRange(0, 99999);
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(inputLink.value).catch(() => document.execCommand('copy'));
+      } else {
+        document.execCommand('copy');
+      }
+
+      const btnCopiar = document.getElementById('btn-copiar-link-alunos');
+      btnCopiar.innerText = "✅ Link Copiado!";
+      btnCopiar.classList.add('copiado');
+    }
+
+    function fecharPopupCompartilharEVerGabarito() {
+      document.getElementById('modal-compartilhar-sala').classList.remove('active');
+      if (!isModoProfessor && !rodadaEncerrada && !jogoFinalizado) {
+        iniciarCronometro(tempoRestante);
+      }
+    }
+
+    function limparDestaquesInvalidos() {
+      ['input-escola', 'select-uf', 'input-turma', 'input-professora', 'select-disciplina', 'select-nivel', 'input-nome-equipe'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('campo-invalido');
+      });
+    }
+
+    function destacarCamposVazios(listaIds) {
+      limparDestaquesInvalidos();
+      listaIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.value.trim() === "") {
+          el.classList.add('campo-invalido');
+        }
+      });
+    }
+
+    async function salvarInfoSalaFirebase() {
+      const dadosSala = {
+        escola: nomeEscola,
+        uf: ufEscola,
+        turma: nomeTurma,
+        professora: nomeProfessora,
+        disciplina: disciplinaSelecionada,
+        nivel: nivelSelecionado,
+        dataRegistro: new Date().toLocaleString('pt-BR')
+      };
+
+      try {
+        await fetch(`${FIREBASE_URL}/salas/${codigoSala}/info.json`, {
+          method: 'PUT',
+          body: JSON.stringify(dadosSala)
+        });
+
+        await fetch(`${FIREBASE_URL}/registros_uso/${codigoSala}.json`, {
+          method: 'PUT',
+          body: JSON.stringify(dadosSala)
+        });
+      } catch (e) {
+        console.log("Aviso: Verifique a conexão com o Firebase.");
+      }
+    }
+
+    async function buscarInfoSalaFirebase() {
+      try {
+        const res = await fetch(`${FIREBASE_URL}/salas/${codigoSala}/info.json`);
+        const data = await res.json();
+        if (data) {
+          nomeEscola = data.escola || "Não informada";
+          ufEscola = data.uf || "";
+          nomeTurma = data.turma || "---";
+          nomeProfessora = data.professora || "---";
+          disciplinaSelecionada = data.disciplina || "Geografia";
+          nivelSelecionado = data.nivel || "1";
+
+          document.getElementById('display-escola').innerText = ufEscola ? `${nomeEscola} (${ufEscola})` : nomeEscola;
+          document.getElementById('display-turma').innerText = nomeTurma;
+          document.getElementById('display-disciplina').innerText = disciplinaSelecionada;
+          document.getElementById('display-professora').innerText = nomeProfessora;
+          
+          const textoNivel = nivelSelecionado === "todos" ? "Todos os Estados (27 UF)" : `Nível ${nivelSelecionado}`;
+          document.getElementById('badge-nivel-aluno').innerText = textoNivel;
+          document.getElementById('nivel-display').innerText = textoNivel;
+        }
+      } catch (e) {
+        console.log("Erro ao carregar dados da sala.");
+      }
+    }
+
+    async function enviarPontuacaoFirebase() {
+      // O professor NÃO entra no ranking como jogador!
+      if (isModoProfessor || !codigoSala) return;
+      try {
+        await fetch(`${FIREBASE_URL}/salas/${codigoSala}/jogadores/${idJogadorUnico}.json`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            nome: nomeEquipe,
+            pontos: pontuacaoAtual,
+            nivel: nivelSelecionado,
+            atualizadoEm: new Date().toLocaleTimeString('pt-BR')
+          })
+        });
+      } catch (e) {
+        console.log("Erro ao enviar pontuação.");
+      }
+    }
+
+    async function carregarDadosRanking() {
+      const tbody = document.getElementById('corpo-tabela-ranking');
+      if (!codigoSala) {
+        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Crie ou entre em uma sala primeiro para visualizar o ranking.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Carregando ranking ao vivo...</td></tr>';
+
+      try {
+        const res = await fetch(`${FIREBASE_URL}/salas/${codigoSala}/jogadores.json`);
+        const dados = await res.json();
+
+        if (!dados) {
+          tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Aguardando os alunos entrarem e pontuarem nesta sala...</td></tr>';
+          return;
+        }
+
+        const listaJogadores = Object.values(dados).sort((a, b) => b.pontos - a.pontos);
+
+        tbody.innerHTML = '';
+        listaJogadores.forEach((jog, idx) => {
+          const medalha = idx === 0 ? '🥇 1º' : idx === 1 ? '🥈 2º' : idx === 2 ? '🥉 3º' : `${idx + 1}º`;
+          tbody.innerHTML += `
+            <tr>
+              <td>${medalha}</td>
+              <td>${jog.nome}</td>
+              <td><strong>${jog.pontos} pts</strong></td>
+            </tr>
+          `;
+        });
+      } catch (e) {
+        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#c23616;">Erro de conexão com o ranking.</td></tr>';
+      }
+    }
+
+    function abrirRankingAoVivo(finalDeJogo = false) {
+      pararCronometro();
+      document.getElementById('ranking-codigo-sala').innerText = codigoSala || "Nenhuma sala ativa";
+      
+      const titulo = document.getElementById('titulo-modal-ranking');
+      const subtitulo = document.getElementById('subtitulo-modal-ranking');
+      const btnFechar = document.getElementById('btn-fechar-ranking');
+
+      if (finalDeJogo && !isModoProfessor) {
+        titulo.innerHTML = `🏁 Resultado Final • Sala ${codigoSala}`;
+        subtitulo.innerText = `Partida concluída por ${nomeEquipe} com ${pontuacaoAtual} pontos.`;
+        btnFechar.innerText = "Jogar Novamente";
+        btnFechar.onclick = () => {
+          pontuacaoAtual = 0;
+          jogoFinalizado = false;
+          document.getElementById('modal-ranking').classList.remove('active');
+          filtrarDesafiosPorNivel(nivelSelecionado);
+          carregarDesafio(0);
+        };
+      } else {
+        titulo.innerHTML = `🏆 Ranking da Sala: ${codigoSala || '---'}`;
+        subtitulo.innerText = "Classificação dos alunos atualizada em tempo real";
+        btnFechar.innerText = isModoProfessor ? "Voltar ao Painel" : "Voltar ao Jogo";
+        btnFechar.onclick = fecharRanking;
+      }
+
+      document.getElementById('modal-ranking').classList.add('active');
+      carregarDadosRanking();
+    }
+
+    function fecharRanking() {
+      document.getElementById('modal-ranking').classList.remove('active');
+      if (
+        !isModoProfessor &&
+        !document.getElementById('modal-registro').classList.contains('active') &&
+        !document.getElementById('modal-compartilhar-sala').classList.contains('active') &&
+        !rodadaEncerrada &&
+        !jogoFinalizado
+      ) {
+        iniciarCronometro(tempoRestante);
+      }
+    }
+
+    function abrirModalRegistro() {
+      pararCronometro();
+      clearTimeout(avancoAutomaticoTimeout);
+      document.getElementById('modal-derrota').classList.remove('active');
+      document.getElementById('modal-vitoria').classList.remove('active');
+      document.getElementById('modal-compartilhar-sala').classList.remove('active');
+      document.getElementById('modal-registro').classList.add('active');
+    }
+
+    async function iniciarSessao() {
+      const msgValidacao = document.getElementById('msg-validacao-form');
+
+      if (isModoProfessor) {
+        const camposIds = ['input-escola', 'select-uf', 'input-turma', 'input-professora', 'select-disciplina', 'select-nivel'];
+        if (!camposProfessorCompletos()) {
+          destacarCamposVazios(camposIds);
+          msgValidacao.innerText = "⚠️ Por favor, preencha todos os campos obrigatórios (Escola, UF, Turma, Professor, Disciplina e Nível) para gerar a sala.";
+          msgValidacao.classList.add('visivel');
+          return;
+        }
+
+        msgValidacao.classList.remove('visivel');
+        limparDestaquesInvalidos();
+
+        if (!salaGerada) {
+          gerarCodigoSala();
+          salaGerada = true;
+        }
+
+        nomeEscola = document.getElementById('input-escola').value.trim();
+        ufEscola = document.getElementById('select-uf').value;
+        nomeTurma = document.getElementById('input-turma').value.trim();
+        nomeProfessora = document.getElementById('input-professora').value.trim();
+        disciplinaSelecionada = document.getElementById('select-disciplina').value;
+        nivelSelecionado = document.getElementById('select-nivel').value;
+
+        await salvarInfoSalaFirebase();
+      } else {
+        const equipeInput = document.getElementById('input-nome-equipe').value.trim();
+        if (equipeInput === "") {
+          destacarCamposVazios(['input-nome-equipe']);
+          msgValidacao.innerText = "⚠️ Informe o nome do aluno ou da equipe para entrar na sala.";
+          msgValidacao.classList.add('visivel');
+          return;
+        }
+        msgValidacao.classList.remove('visivel');
+        limparDestaquesInvalidos();
+        nomeEquipe = equipeInput;
+        await buscarInfoSalaFirebase();
+
+        try {
+          const audioFaustao = document.getElementById('audio-faustao-errou');
+          if (audioFaustao) audioFaustao.load();
+        } catch (e) {}
+      }
+
+      pontuacaoAtual = 0;
+      jogoFinalizado = false;
+
+      document.getElementById('display-escola').innerText = ufEscola ? `${nomeEscola} (${ufEscola})` : nomeEscola;
+      document.getElementById('display-turma').innerText = nomeTurma;
+      document.getElementById('display-disciplina').innerText = disciplinaSelecionada;
+      document.getElementById('display-professora').innerText = nomeProfessora;
+      document.getElementById('nivel-display').innerText = nivelSelecionado === "todos" ? "Todos os Estados" : `Nível ${nivelSelecionado}`;
+
+      configurarInterfacePorPapel();
+      document.getElementById('modal-registro').classList.remove('active');
+      
+      filtrarDesafiosPorNivel(nivelSelecionado);
+      
+      if (!isModoProfessor) {
+        enviarPontuacaoFirebase();
+      }
+      
+      carregarDesafio(0);
+
+      if (isModoProfessor) {
+        abrirPopupCompartilharSala();
+      }
+    }
+
+    function navegarBandeiraProfessor(direcao) {
+      const novoIndice = indiceAtual + direcao;
+      if (novoIndice >= 0 && novoIndice < desafiosDaPartida.length) {
+        carregarDesafio(novoIndice);
+      }
+    }
+
+    function iniciarCronometro(tempoInicial) {
+      if (isModoProfessor) return;
+      pararCronometro();
+      tempoRestante = tempoInicial;
+      atualizarDisplayTempo();
+
+      temporizadorInterval = setInterval(() => {
+        tempoRestante--;
+        atualizarDisplayTempo();
+
+        if (tempoRestante <= 0) {
+          pararCronometro();
+          exibirDerrota(true);
+        }
+      }, 1000);
+    }
+
+    function pararCronometro() {
+      if (temporizadorInterval) {
+        clearInterval(temporizadorInterval);
+        temporizadorInterval = null;
+      }
+    }
+
+    function atualizarDisplayTempo() {
+      document.getElementById('tempo-display').innerText = `${tempoRestante}s`;
+    }
+
+    function atualizarPainelPontos() {
+      document.getElementById('pontos-atuais').innerText = pontuacaoAtual;
+    }
+
+    function obterCustoDica(nivel) {
+      return 3;
+    }
+
+    function revelarLetraDica() {
+      if (isModoProfessor || rodadaEncerrada) return;
+      const desafio = desafiosDaPartida[indiceAtual];
+      const municipio = desafio.municipio;
+      const letrasNaoAdivinhadas = municipio.split('').filter(char => char !== ' ' && !letrasAdivinhadas.includes(char));
+
+      if (letrasNaoAdivinhadas.length > 0) {
+        const custo = obterCustoDica(desafio.nivel);
+        const letraSorteada = letrasNaoAdivinhadas[Math.floor(Math.random() * letrasNaoAdivinhadas.length)];
+        pontuacaoAtual = Math.max(0, pontuacaoAtual - custo);
+        atualizarPainelPontos();
+        enviarPontuacaoFirebase();
+
+        const botoes = document.querySelectorAll('.btn-tecla');
+        botoes.forEach(btn => {
+          if (btn.innerText === letraSorteada) tentarLetra(letraSorteada, btn);
+        });
+      }
+    }
+
+    function revelarNomeNaBandeira(nomeMunicipio) {
+      document.getElementById('legenda-bandeira').innerText = `Bandeira de ${nomeMunicipio}`;
+    }
+
+    function ocultarNomeNaBandeira() {
+      document.getElementById('legenda-bandeira').innerText = "";
+    }
+
+    function tocarAudioFaustaoErrou() {
+      const audioEl = document.getElementById('audio-faustao-errou');
+      if (audioEl) {
+        audioEl.pause();
+        audioEl.currentTime = 0;
+        const promessa = audioEl.play();
+        if (promessa !== undefined) {
+          promessa.catch(() => {
+            falarErrouFallback();
+          });
+        }
+      } else {
+        falarErrouFallback();
+      }
+    }
+
+    function falarErrouFallback() {
+      try {
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const fala = new SpeechSynthesisUtterance("Errou!");
+          fala.lang = "pt-BR";
+          fala.pitch = 0.85;
+          fala.rate = 0.95;
+          fala.volume = 1.0;
+          window.speechSynthesis.speak(fala);
+        }
+      } catch (e) {}
+    }
+
+    function tocarSom(tipo) {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (tipo === 'acerto') {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.connect(gain); gain.connect(audioCtx.destination);
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(660, audioCtx.currentTime);
+          gain.gain.setValueAtTime(0.32, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.14);
+          osc.start(); osc.stop(audioCtx.currentTime + 0.14);
+        } else if (tipo === 'vitoria') {
+          const notas = [261.63, 329.63, 392.00, 523.25];
+          notas.forEach((freq, idx) => {
+            const oscNota = audioCtx.createOscillator();
+            const gainNota = audioCtx.createGain();
+            oscNota.connect(gainNota); gainNota.connect(audioCtx.destination);
+            oscNota.frequency.value = freq;
+            gainNota.gain.setValueAtTime(0.22, audioCtx.currentTime + idx * 0.1);
+            gainNota.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + idx * 0.1 + 0.25);
+            oscNota.start(audioCtx.currentTime + idx * 0.1);
+            oscNota.stop(audioCtx.currentTime + idx * 0.1 + 0.25);
+          });
+        }
+      } catch (e) {}
+    }
+
+    function carregarDesafio(index) {
+      clearTimeout(avancoAutomaticoTimeout);
+      indiceAtual = index;
+      const desafio = desafiosDaPartida[indiceAtual];
+      letrasAdivinhadas = [];
+      erros = 0;
+      rodadaEncerrada = false;
+
+      document.getElementById('modal-vitoria').classList.remove('active');
+      document.getElementById('modal-derrota').classList.remove('active');
+
+      const imgElem = document.getElementById('img-bandeira');
+      imgElem.onerror = function() {
+        if (desafio.bandeiraFallback && this.src !== desafio.bandeiraFallback) {
+          this.src = desafio.bandeiraFallback;
+        }
+      };
+      imgElem.src = desafio.bandeira;
+
+      document.getElementById('progresso-rodada').innerText = `Bandeira ${indiceAtual + 1} de ${desafiosDaPartida.length} • Vale ${desafio.pontos} pts`;
+      document.getElementById('nivel-display').innerText = `Nível ${desafio.nivel}`;
+      document.getElementById('texto-dica').innerText = desafio.dica;
+
+      if (isModoProfessor) {
+        // Para o Professor: Revela o nome da bandeira e preenche todas as letras automaticamente!
+        revelarNomeNaBandeira(desafio.nomeExibicao);
+        letrasAdivinhadas = desafio.municipio.split('').filter(c => c !== ' ');
+        renderizarPalavra();
+
+        document.getElementById('btn-prof-anterior').disabled = (indiceAtual === 0);
+        document.getElementById('btn-prof-proxima').disabled = (indiceAtual === desafiosDaPartida.length - 1);
+      } else {
+        // Para o Aluno: Oculta o nome e inicia o jogo
+        ocultarNomeNaBandeira();
+        document.getElementById('tentativas').innerText = maxErros;
+
+        const custoDica = obterCustoDica(desafio.nivel);
+        document.getElementById('btn-dica-extra').innerText = `💡 Revelar 1 Letra (-${custoDica} pts)`;
+
+        atualizarPainelPontos();
+        renderizarPalavra();
+        renderizarTeclado();
+        
+        if (
+          !document.getElementById('modal-registro').classList.contains('active') &&
+          !document.getElementById('modal-compartilhar-sala').classList.contains('active')
+        ) {
+          iniciarCronometro(desafio.tempo);
+        } else {
+          tempoRestante = desafio.tempo;
+          atualizarDisplayTempo();
+        }
+      }
+    }
+
+    function renderizarPalavra() {
+      const container = document.getElementById('palavra-container');
+      container.innerHTML = '';
+      const palavra = desafiosDaPartida[indiceAtual].municipio;
+
+      for (let char of palavra) {
+        const slot = document.createElement('div');
+        if (char === ' ') {
+          slot.classList.add('letra-slot', 'espaco');
+        } else {
+          slot.classList.add('letra-slot');
+          slot.innerText = letrasAdivinhadas.includes(char) ? char : '';
+        }
+        container.appendChild(slot);
+      }
+    }
+
+    function renderizarTeclado() {
+      const container = document.getElementById('teclado-container');
+      container.innerHTML = '';
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(letra => {
+        const btn = document.createElement('button');
+        btn.type = "button";
+        btn.classList.add('btn-tecla');
+        btn.innerText = letra;
+        btn.onclick = () => tentarLetra(letra, btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function tentarLetra(letra, botao) {
+      if (
+        isModoProfessor ||
+        rodadaEncerrada ||
+        document.getElementById('modal-registro').classList.contains('active') ||
+        document.getElementById('modal-compartilhar-sala').classList.contains('active') ||
+        document.getElementById('modal-vitoria').classList.contains('active') ||
+        document.getElementById('modal-derrota').classList.contains('active') ||
+        document.getElementById('modal-ranking').classList.contains('active')
+      ) {
+        return;
+      }
+
+      botao.disabled = true;
+      const municipio = desafiosDaPartida[indiceAtual].municipio;
+
+      if (municipio.includes(letra)) {
+        tocarSom('acerto');
+        letrasAdivinhadas.push(letra);
+        renderizarPalavra();
+        verificarVitoria();
+      } else {
+        erros++;
+        document.getElementById('tentativas').innerText = maxErros - erros;
+        tocarAudioFaustaoErrou();
+        if (erros >= maxErros) exibirDerrota(false);
+      }
+    }
+
+    function verificarVitoria() {
+      const desafio = desafiosDaPartida[indiceAtual];
+      const municipio = desafio.municipio;
+      const ganhou = municipio.split('').every(char => char === ' ' || letrasAdivinhadas.includes(char));
+      
+      if (ganhou) {
+        rodadaEncerrada = true;
+        pararCronometro();
+
+        revelarNomeNaBandeira(desafio.nomeExibicao);
+
+        const pontosGanhos = desafio.pontos;
+        pontuacaoAtual += pontosGanhos;
+
+        atualizarPainelPontos();
+        enviarPontuacaoFirebase();
+
+        document.getElementById('vitoria-equipe-nome').innerText = nomeEquipe;
+        document.getElementById('vitoria-municipio-nome').innerText = desafio.nomeExibicao;
+        document.getElementById('pontos-ganhos').innerText = pontosGanhos;
+
+        const isUltima = indiceAtual + 1 >= desafiosDaPartida.length;
+        document.getElementById('btn-proximo-municipio').innerText = isUltima ? "Ver Ranking Final 🏆" : "Próxima Bandeira";
+
+        tocarSom('vitoria');
+        setTimeout(() => document.getElementById('modal-vitoria').classList.add('active'), 400);
+      }
+    }
+
+    function exibirDerrota(porTempo = false) {
+      if (
+        isModoProfessor ||
+        document.getElementById('modal-registro').classList.contains('active') ||
+        document.getElementById('modal-compartilhar-sala').classList.contains('active') ||
+        rodadaEncerrada
+      ) return;
+
+      rodadaEncerrada = true;
+      pararCronometro();
+      if (porTempo) {
+        tocarAudioFaustaoErrou();
+      }
+
+      const desafio = desafiosDaPartida[indiceAtual];
+      revelarNomeNaBandeira(desafio.nomeExibicao);
+
+      const titulo = document.getElementById('titulo-derrota');
+      const containerMsg = document.getElementById('mensagem-derrota');
+      const isUltima = indiceAtual + 1 >= desafiosDaPartida.length;
+      const btnAvancar = document.getElementById('btn-avancar-derrota');
+      btnAvancar.innerText = isUltima ? "Ver Ranking Final 🏆" : "Próxima Bandeira";
+
+      if (porTempo) {
+        titulo.innerText = "⏰ Tempo Esgotado!";
+        containerMsg.innerHTML = `A bandeira pertencia ao estado de <strong>${desafio.nomeExibicao}</strong>.<br><small style="color:var(--texto-suave);">Avançando automaticamente...</small>`;
+        
+        avancoAutomaticoTimeout = setTimeout(() => {
+          avancarProximaBandeira();
+        }, 2500);
+      } else {
+        titulo.innerText = "Fim das tentativas";
+        containerMsg.innerHTML = `A bandeira pertencia ao estado de <strong>${desafio.nomeExibicao}</strong>.`;
+      }
+
+      setTimeout(() => document.getElementById('modal-derrota').classList.add('active'), 300);
+    }
+
+    function avancarProximaBandeira() {
+      clearTimeout(avancoAutomaticoTimeout);
+      document.getElementById('modal-vitoria').classList.remove('active');
+      document.getElementById('modal-derrota').classList.remove('active');
+
+      const proximoIndice = indiceAtual + 1;
+      if (proximoIndice < desafiosDaPartida.length) {
+        carregarDesafio(proximoIndice);
+      } else {
+        jogoFinalizado = true;
+        enviarPontuacaoFirebase();
+        abrirRankingAoVivo(true);
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (isModoProfessor) return;
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
+        return;
+      }
+      if (
+        rodadaEncerrada ||
+        document.getElementById('modal-registro').classList.contains('active') ||
+        document.getElementById('modal-compartilhar-sala').classList.contains('active') ||
+        document.getElementById('modal-vitoria').classList.contains('active') ||
+        document.getElementById('modal-derrota').classList.contains('active') ||
+        document.getElementById('modal-ranking').classList.contains('active')
+      ) {
+        return;
+      }
+
+      const letra = e.key.toUpperCase();
+      if (/^[A-Z]$/.test(letra)) {
+        document.querySelectorAll('.btn-tecla').forEach(btn => {
+          if (btn.innerText === letra && !btn.disabled) tentarLetra(letra, btn);
+        });
+      }
+    });
+
+    filtrarDesafiosPorNivel("1");
+    verificarParametrosURL();
+    configurarInterfacePorPapel();
+    carregarDesafio(0);
+
+    function abrirPainelProfessor() {
+      document.getElementById('modal-painel-professor').classList.add('active');
+      carregarListaSalasProfessor();
+    }
+
+    function fecharPainelProfessor() {
+      document.getElementById('modal-painel-professor').classList.remove('active');
+    }
+
+    async function carregarListaSalasProfessor() {
+      const container = document.getElementById('lista-salas-container');
+      container.innerHTML = '<p style="text-align: center; color: var(--texto-suave); padding: 20px;">A carregar salas do servidor...</p>';
+
+      try {
+        const res = await fetch(`${FIREBASE_URL}/salas.json`);
+        const dados = await res.json();
+
+        if (!dados) {
+          container.innerHTML = '<p style="text-align: center; color: var(--texto-suave); padding: 20px;">Nenhuma sala encontrada no servidor.</p>';
+          return;
+        }
+
+        container.innerHTML = '';
+        const chavesSalas = Object.keys(dados);
+
+        chavesSalas.forEach(cod => {
+          const info = dados[cod].info || {};
+          const qtdAlunos = dados[cod].jogadores ? Object.keys(dados[cod].jogadores).length : 0;
+          const escola = info.escola || "Escola não informada";
+          const uf = info.uf ? ` - ${info.uf}` : "";
+          const turma = info.turma || "Turma não informada";
+          const prof = info.professora || "Professor(a) não informado(a)";
+          const nivel = info.nivel ? `Nível ${info.nivel}` : "---";
+
+          container.innerHTML += `
+            <div style="background: #fff; border: 1px solid #cbd5e0; border-radius: 8px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+              <div>
+                <span class="pill-status" style="font-size: .7rem; padding: 2px 8px;">Código: ${cod}</span>
+                <strong style="display: block; margin-top: 4px; font-size: .95rem; color: var(--verde-escuro);">${escola}${uf} (${turma})</strong>
+                <small style="color: var(--texto-secundario);">Prof(a): ${prof} • ${nivel} • Alunos ativos: <strong>${qtdAlunos}</strong></small>
+              </div>
+              <div style="display: flex; gap: 6px;">
+                <button type="button" class="btn-ifap btn-ifap-azul" style="padding: 6px 12px; font-size: .8rem;" onclick="entrarNaSalaDoProfessor('${cod}')">Ver Ranking</button>
+              </div>
+            </div>
+          `;
+        });
+      } catch (e) {
+        container.innerHTML = '<p style="text-align: center; color: var(--vermelho-alerta); padding: 20px;">Erro ao carregar lista de salas.</p>';
+      }
+    }
+
+    function entrarNaSalaDoProfessor(cod) {
+      codigoSala = cod;
+      salaGerada = true;
+      document.getElementById('display-codigo-sala').innerText = codigoSala;
+      fecharPainelProfessor();
+      abrirRankingAoVivo(false);
+    }
+  </script>
+</body>
+</html>
