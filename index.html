@@ -511,6 +511,50 @@
       width: 16px;
     }
 
+    /* Hífen e apóstrofo (ex.: Ji-Paraná, Espigão D'Oeste) já aparecem revelados */
+    .letra-slot.simbolo {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      width: 18px;
+    }
+
+    /* Mantém cada palavra inteira na mesma linha quando o nome é longo */
+    .palavra-grupo {
+      display: inline-flex;
+      gap: 7px;
+      flex-wrap: nowrap;
+    }
+
+    @media (max-width: 520px) {
+      .palavra-container, .palavra-grupo { gap: 4px; }
+      .letra-slot { width: 28px; height: 38px; font-size: 1.1rem; }
+    }
+
+    /* Tipo da imagem exibida (bandeira, brasão, mapa) no modo municípios */
+    .tipo-imagem {
+      margin-top: 8px;
+      font-size: .74rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--texto-suave);
+      text-align: center;
+      min-height: 18px;
+    }
+
+    .form-grid-3 {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 12px;
+    }
+
+    .status-base {
+      font-size: .8rem;
+      color: var(--texto-suave);
+      margin: -4px 0 14px;
+    }
+
     /* Teclado Virtual */
     .teclado-container {
       display: flex;
@@ -927,7 +971,7 @@
 
     @media (max-width: 768px) {
       .arena-superior { grid-template-columns: 1fr; }
-      .form-grid-2, .form-grid-escola { grid-template-columns: 1fr; }
+      .form-grid-2, .form-grid-3, .form-grid-escola { grid-template-columns: 1fr; }
       .qrcode-panel { flex-direction: column; text-align: center; }
       .qrcode-info { text-align: center; }
       .site-footer .footer-sep { display: none; }
@@ -991,7 +1035,7 @@
           <span class="sub-nav-sep">/</span>
           <button type="button" class="link-nav" onclick="abrirPainelProfessor()" style="color: var(--govbr-azul);">👨‍🏫 Painel do Professor</button>
           <span class="sub-nav-sep">/</span>
-          <span class="sub-nav-atual">Estados do Brasil</span>
+          <span class="sub-nav-atual" id="sub-nav-modo">Estados do Brasil</span>
         </div>
         <span class="badge-sala-topo">SALA: <span id="display-codigo-sala">AGUARDANDO</span></span>
       </div>
@@ -1053,8 +1097,9 @@
         <div class="arena-superior">
           <div class="bandeira-box">
             <div class="bandeira-frame">
-              <img id="img-bandeira" class="bandeira-img" src="" alt="Bandeira do estado">
+              <img id="img-bandeira" class="bandeira-img" src="" alt="Imagem do desafio">
             </div>
+            <div class="tipo-imagem" id="tipo-imagem"></div>
             <div class="legenda-bandeira-revelada" id="legenda-bandeira"></div>
           </div>
 
@@ -1194,16 +1239,56 @@
             </div>
 
             <div class="form-grupo">
-              <label for="select-nivel">Nível da Partida (Regiões) *</label>
-              <select id="select-nivel" class="form-controle" onchange="verificarPreenchimentoSala()">
-                <option value="">Selecione o nível...</option>
-                <option value="1">Nível 1: Região Norte (7 estados)</option>
-                <option value="2">Nível 2: Região Nordeste (9 estados)</option>
-                <option value="3">Nível 3: Centro-Oeste e Sul (7 UF)</option>
-                <option value="4">Nível 4: Região Sudeste (4 estados)</option>
-                <option value="todos">Todos os Estados (27 UF)</option>
+              <label for="select-modo">Modo de Jogo *</label>
+              <select id="select-modo" class="form-controle" onchange="alterarModoJogo()">
+                <option value="estados">Estados do Brasil (27 UF)</option>
+                <option value="municipios">Municípios do Brasil (5.571)</option>
               </select>
             </div>
+          </div>
+
+          <!-- CAMPOS DO MODO ESTADOS -->
+          <div class="form-grupo" id="campos-estados">
+            <label for="select-nivel">Nível da Partida (Regiões) *</label>
+            <select id="select-nivel" class="form-controle" onchange="verificarPreenchimentoSala()">
+              <option value="">Selecione o nível...</option>
+              <option value="1">Nível 1: Região Norte (7 estados)</option>
+              <option value="2">Nível 2: Região Nordeste (9 estados)</option>
+              <option value="3">Nível 3: Centro-Oeste e Sul (7 UF)</option>
+              <option value="4">Nível 4: Região Sudeste (4 estados)</option>
+              <option value="todos">Todos os Estados (27 UF)</option>
+            </select>
+          </div>
+
+          <!-- CAMPOS DO MODO MUNICÍPIOS -->
+          <div id="campos-municipios" style="display: none;">
+            <div class="form-grid-3">
+              <div class="form-grupo">
+                <label for="select-abrangencia">Municípios de *</label>
+                <select id="select-abrangencia" class="form-controle" onchange="verificarPreenchimentoSala()">
+                  <option value="">Selecione...</option>
+                  <option value="BR">Brasil todo</option>
+                </select>
+              </div>
+              <div class="form-grupo">
+                <label for="select-dificuldade">Dificuldade *</label>
+                <select id="select-dificuldade" class="form-controle" onchange="verificarPreenchimentoSala()">
+                  <option value="facil" title="Municípios mais populosos e capitais">Fácil</option>
+                  <option value="medio" title="Municípios de porte médio">Médio</option>
+                  <option value="dificil" title="Municípios pequenos e menos conhecidos">Difícil</option>
+                </select>
+              </div>
+              <div class="form-grupo">
+                <label for="select-rodadas">Rodadas *</label>
+                <select id="select-rodadas" class="form-controle" onchange="verificarPreenchimentoSala()">
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                </select>
+              </div>
+            </div>
+            <p class="status-base" id="status-base-municipios"></p>
           </div>
         </div>
 
@@ -1313,12 +1398,12 @@
   <div class="modal-overlay" id="modal-vitoria">
     <div class="modal-card">
       <div class="modal-card-header">
-        <h2>🎉 Estado Identificado!</h2>
+        <h2 id="titulo-vitoria">🎉 Estado Identificado!</h2>
         <p>Excelente trabalho, <span id="vitoria-equipe-nome"></span>!</p>
       </div>
       <div class="modal-card-body" style="text-align: center;">
         <p style="font-size: 1.05rem; margin-bottom: 18px;">
-          Você acertou a bandeira de <strong><span id="vitoria-municipio-nome"></span></strong> e somou <strong>+<span id="pontos-ganhos">0</span> pontos</strong>!
+          <span id="vitoria-prefixo">Você acertou a bandeira de</span> <strong><span id="vitoria-municipio-nome"></span></strong> e somou <strong>+<span id="pontos-ganhos">0</span> pontos</strong>!
         </p>
         <button type="button" class="btn-ifap btn-ifap-solido" id="btn-proximo-municipio" onclick="avancarProximaBandeira()">
           Próxima Bandeira
@@ -1468,6 +1553,274 @@
       indiceAtual = 0;
     }
 
+    // ================= MODO MUNICÍPIOS (DADOS DE APIs PÚBLICAS) =================
+    // Base local: dados/municipios.json (gerada por gerar_municipios.py a partir do IBGE e do Wikidata).
+    // Se o arquivo não carregar, busca direto da API do IBGE e as imagens no Wikidata.
+
+    // [nome, região, preposição usada com o nome do estado]
+    const UFS = {
+      AC: ["Acre", "Norte", "do"], AL: ["Alagoas", "Nordeste", "de"], AP: ["Amapá", "Norte", "do"],
+      AM: ["Amazonas", "Norte", "do"], BA: ["Bahia", "Nordeste", "da"], CE: ["Ceará", "Nordeste", "do"],
+      DF: ["Distrito Federal", "Centro-Oeste", "do"], ES: ["Espírito Santo", "Sudeste", "do"],
+      GO: ["Goiás", "Centro-Oeste", "de"], MA: ["Maranhão", "Nordeste", "do"], MT: ["Mato Grosso", "Centro-Oeste", "de"],
+      MS: ["Mato Grosso do Sul", "Centro-Oeste", "de"], MG: ["Minas Gerais", "Sudeste", "de"], PA: ["Pará", "Norte", "do"],
+      PB: ["Paraíba", "Nordeste", "da"], PR: ["Paraná", "Sul", "do"], PE: ["Pernambuco", "Nordeste", "de"],
+      PI: ["Piauí", "Nordeste", "do"], RJ: ["Rio de Janeiro", "Sudeste", "do"], RN: ["Rio Grande do Norte", "Nordeste", "do"],
+      RS: ["Rio Grande do Sul", "Sul", "do"], RO: ["Rondônia", "Norte", "de"], RR: ["Roraima", "Norte", "de"],
+      SC: ["Santa Catarina", "Sul", "de"], SP: ["São Paulo", "Sudeste", "de"], SE: ["Sergipe", "Nordeste", "de"],
+      TO: ["Tocantins", "Norte", "do"]
+    };
+
+    const DIFICULDADES = {
+      facil: { rotulo: "Fácil", pontos: 10 },
+      medio: { rotulo: "Médio", pontos: 20 },
+      dificil: { rotulo: "Difícil", pontos: 30 }
+    };
+
+    let modoJogo = "estados";        // "estados" ou "municipios"
+    let abrangenciaSelecionada = ""; // "BR" ou sigla da UF
+    let numRodadas = 10;
+    let codigosMunicipios = [];      // códigos IBGE sorteados pelo professor (compartilhados com os alunos)
+    let promessaBaseMunicipios = null;
+
+    function semAcentos(texto) {
+      return texto.normalize('NFD').replace(/[̀-ͯ]/g, '');
+    }
+
+    // Só letras A-Z são adivinhadas; espaço, hífen e apóstrofo já aparecem revelados
+    function ehLetra(char) {
+      return /^[A-Z]$/.test(char);
+    }
+
+    function carregarBaseMunicipios() {
+      if (promessaBaseMunicipios) return promessaBaseMunicipios;
+
+      promessaBaseMunicipios = (async () => {
+        try {
+          const res = await fetch('dados/municipios.json');
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const dados = await res.json();
+          return { municipios: dados.municipios, origem: `dados locais (IBGE/Wikidata, ${dados.geradoEm})`, aoVivo: false };
+        } catch (e) {
+          // Plano B: API pública do IBGE em tempo real (sem população; imagens vêm do Wikidata por rodada)
+          const res = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/municipios?view=nivelado');
+          if (!res.ok) throw new Error('IBGE indisponível');
+          const lista = await res.json();
+          const corrigir = t => (t || '').replace(/¿/g, '-'); // IBGE traz '¿' no lugar do travessão
+          return {
+            municipios: lista.map(m => ({
+              c: m['municipio-id'],
+              n: corrigir(m['municipio-nome']),
+              uf: m['UF-sigla'],
+              ri: corrigir(m['regiao-intermediaria-nome']),
+              rm: corrigir(m['regiao-imediata-nome'])
+            })).sort((a, b) => a.c - b.c),
+            origem: 'API do IBGE em tempo real',
+            aoVivo: true
+          };
+        }
+      })();
+
+      // Se falhar, permite tentar de novo na próxima chamada
+      promessaBaseMunicipios.catch(() => { promessaBaseMunicipios = null; });
+      return promessaBaseMunicipios;
+    }
+
+    // No plano B, busca bandeira/brasão/mapa só dos municípios sorteados
+    async function completarImagensWikidata(municipios) {
+      const faltando = municipios.filter(m => !m.b && !m.br && !m.m && !m.imagensBuscadas);
+      if (faltando.length === 0) return;
+
+      const valores = faltando.map(m => `"${m.c}"`).join(' ');
+      const consulta = `SELECT ?ibge (SAMPLE(?f) AS ?b) (SAMPLE(?a) AS ?br) (SAMPLE(?p) AS ?m) WHERE {
+        VALUES ?ibge { ${valores} } ?item wdt:P1585 ?ibge .
+        OPTIONAL { ?item wdt:P41 ?f } OPTIONAL { ?item wdt:P94 ?a } OPTIONAL { ?item wdt:P242 ?p }
+      } GROUP BY ?ibge`;
+
+      try {
+        const res = await fetch('https://query.wikidata.org/sparql?format=json&query=' + encodeURIComponent(consulta));
+        const dados = await res.json();
+        const arquivo = uri => uri ? decodeURIComponent(uri.split('/').pop()) : undefined;
+        dados.results.bindings.forEach(r => {
+          const m = faltando.find(x => String(x.c) === r.ibge.value);
+          if (!m) return;
+          m.b = arquivo(r.b && r.b.value);
+          m.br = arquivo(r.br && r.br.value);
+          m.m = arquivo(r.m && r.m.value);
+        });
+      } catch (e) {
+        console.log("Wikidata indisponível; usando a bandeira do estado como imagem.");
+      }
+      faltando.forEach(m => { m.imagensBuscadas = true; });
+    }
+
+    function urlCommons(arquivo) {
+      return `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(arquivo)}?width=400`;
+    }
+
+    // Ordem de preferência: bandeira > brasão > mapa de localização > bandeira do estado
+    function montarImagensMunicipio(m) {
+      const imagens = [];
+      if (m.b) imagens.push({ url: urlCommons(m.b), tipo: "Bandeira do município" });
+      if (m.br) imagens.push({ url: urlCommons(m.br), tipo: "Brasão do município" });
+      if (m.m) imagens.push({ url: urlCommons(m.m), tipo: "Localização no estado" });
+      imagens.push({ url: `img/${m.uf.toLowerCase()}.svg`, tipo: "Bandeira do estado (município sem imagem cadastrada)" });
+      return imagens;
+    }
+
+    function formatarPopulacao(p) {
+      if (p >= 1000000) {
+        const milhoes = (p / 1000000).toLocaleString('pt-BR', { maximumFractionDigits: 1 });
+        return `cerca de ${milhoes} ${p >= 2000000 ? 'milhões' : 'milhão'} de habitantes`;
+      }
+      if (p >= 10000) return `cerca de ${Math.round(p / 1000).toLocaleString('pt-BR')} mil habitantes`;
+      return `${p.toLocaleString('pt-BR')} habitantes`;
+    }
+
+    // Monta a dica com os dados do IBGE, descartando frases que entregariam o nome
+    function gerarDicaMunicipio(m) {
+      // Compara palavras inteiras (ex.: "Itá" não deve casar com "habitantes")
+      const nomeNorm = semAcentos(m.n).toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const padraoNome = new RegExp(`(^|[^a-z])${nomeNorm}($|[^a-z])`);
+      const entrega = frase => padraoNome.test(semAcentos(frase).toLowerCase());
+      const [nomeUF, regiao, prep] = UFS[m.uf];
+      const frases = [];
+
+      const fraseUF = m.uf === "DF"
+        ? `Fica no Distrito Federal, na Região Centro-Oeste.`
+        : `Município do estado ${prep} ${nomeUF} (${m.uf}), na Região ${regiao}.`;
+      frases.push(entrega(fraseUF) ? `Município da Região ${regiao}.` : fraseUF);
+
+      if (m.cap) frases.push(m.uf === "DF" ? "É a capital federal." : "É a capital do estado.");
+
+      if (m.p) frases.push(`Tinha ${formatarPopulacao(m.p)} no Censo 2022.`);
+
+      if (m.rm && m.uf !== "DF") { // o DF tem um único município
+        if (entrega(m.rm)) {
+          frases.push("Dá nome à sua região geográfica imediata.");
+        } else {
+          let fraseRegiao = `Faz parte da região geográfica imediata de ${m.rm}`;
+          if (m.ri && m.ri !== m.rm && !entrega(m.ri)) fraseRegiao += `, na região intermediária de ${m.ri}`;
+          frases.push(fraseRegiao + ".");
+        }
+      }
+
+      return frases.join(" ");
+    }
+
+    function montarDesafioMunicipio(m, dificuldade) {
+      const palavra = semAcentos(m.n).toUpperCase();
+      const letrasDistintas = new Set(palavra.split('').filter(ehLetra)).size;
+      const config = DIFICULDADES[dificuldade] || DIFICULDADES.facil;
+      return {
+        nivel: dificuldade,
+        rotuloNivel: `Municípios • ${config.rotulo}`,
+        pontos: config.pontos,
+        tempo: Math.min(60, 30 + 2 * Math.max(0, letrasDistintas - 6)),
+        municipio: palavra,
+        nomeExibicao: `${m.n} (${m.uf})`,
+        dica: gerarDicaMunicipio(m),
+        imagens: montarImagensMunicipio(m)
+      };
+    }
+
+    // Sorteia municípios conforme abrangência e dificuldade (ranking por população do Censo 2022)
+    function sortearMunicipios(base, abrangencia, dificuldade, quantidade) {
+      const escopo = base.municipios.filter(m => abrangencia === "BR" || m.uf === abrangencia);
+      const temPopulacao = escopo.some(m => m.p);
+      let candidatos = escopo;
+
+      if (temPopulacao) {
+        const ordenados = [...escopo].sort((a, b) => (b.p || 0) - (a.p || 0));
+        const corteFacil = Math.max(10, Math.ceil(ordenados.length * 0.10));
+        const corteMedio = Math.max(20, Math.ceil(ordenados.length * 0.40));
+        const faixas = {
+          facil: ordenados.slice(0, corteFacil).concat(ordenados.slice(corteFacil).filter(m => m.cap)),
+          medio: ordenados.slice(corteFacil, corteMedio),
+          dificil: ordenados.slice(corteMedio)
+        };
+        candidatos = faixas[dificuldade] || faixas.facil;
+        // Estados com poucos municípios (ex.: AP tem 16): completa só o que falta,
+        // com os mais populosos (fácil) ou os menos populosos (médio/difícil)
+        if (candidatos.length < quantidade) {
+          const restantes = ordenados.filter(m => !candidatos.includes(m));
+          if (dificuldade !== "facil") restantes.reverse();
+          candidatos = candidatos.concat(restantes.slice(0, quantidade - candidatos.length));
+        }
+      }
+
+      const embaralhados = [...candidatos];
+      for (let i = embaralhados.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [embaralhados[i], embaralhados[j]] = [embaralhados[j], embaralhados[i]];
+      }
+      return embaralhados.slice(0, quantidade).map(m => m.c);
+    }
+
+    async function prepararDesafiosMunicipios() {
+      const base = await carregarBaseMunicipios();
+      const porCodigo = new Map(base.municipios.map(m => [m.c, m]));
+      const selecionados = codigosMunicipios.map(c => porCodigo.get(Number(c))).filter(Boolean);
+      if (base.aoVivo) await completarImagensWikidata(selecionados);
+      desafiosDaPartida = selecionados.map(m => montarDesafioMunicipio(m, nivelSelecionado));
+      indiceAtual = 0;
+    }
+
+    // Recria a partida atual (usado em "Jogar Novamente")
+    function prepararDesafiosDaPartida() {
+      if (modoJogo === "municipios") {
+        indiceAtual = 0; // mesma lista sorteada pelo(a) professor(a)
+      } else {
+        filtrarDesafiosPorNivel(nivelSelecionado);
+      }
+    }
+
+    function descreverNivel() {
+      if (modoJogo === "municipios") {
+        const dif = (DIFICULDADES[nivelSelecionado] || DIFICULDADES.facil).rotulo;
+        const onde = abrangenciaSelecionada === "BR" ? "Brasil" : abrangenciaSelecionada;
+        return `Municípios (${onde}) • ${dif}`;
+      }
+      return nivelSelecionado === "todos" ? "Todos os Estados (27 UF)" : `Nível ${nivelSelecionado}`;
+    }
+
+    function aplicarTextosDoModo() {
+      const municipios = modoJogo === "municipios";
+      document.getElementById('sub-nav-modo').innerText = municipios ? "Municípios do Brasil" : "Estados do Brasil";
+      document.getElementById('titulo-vitoria').innerText = municipios ? "🎉 Município Identificado!" : "🎉 Estado Identificado!";
+      document.getElementById('vitoria-prefixo').innerText = municipios ? "Você acertou o município de" : "Você acertou a bandeira de";
+      document.getElementById('texto-dica').innerText = municipios ? "Carregando dica do município..." : "Carregando dica do estado...";
+    }
+
+    function preencherSelectAbrangencia() {
+      const select = document.getElementById('select-abrangencia');
+      Object.keys(UFS).sort().forEach(uf => {
+        const opt = document.createElement('option');
+        opt.value = uf;
+        opt.innerText = `${uf} - ${UFS[uf][0]}`;
+        select.appendChild(opt);
+      });
+    }
+
+    function alterarModoJogo() {
+      const municipios = document.getElementById('select-modo').value === "municipios";
+      document.getElementById('campos-estados').style.display = municipios ? "none" : "block";
+      document.getElementById('campos-municipios').style.display = municipios ? "block" : "none";
+
+      if (municipios) {
+        const abr = document.getElementById('select-abrangencia');
+        const uf = document.getElementById('select-uf').value;
+        if (!abr.value && uf) abr.value = uf; // sugere a UF da escola
+
+        const status = document.getElementById('status-base-municipios');
+        status.innerText = "⏳ Carregando a base de municípios...";
+        carregarBaseMunicipios()
+          .then(base => { status.innerText = `✅ ${base.municipios.length.toLocaleString('pt-BR')} municípios carregados — fonte: ${base.origem}.`; })
+          .catch(() => { status.innerText = "⚠️ Não foi possível carregar os municípios. Verifique a conexão."; });
+      }
+      verificarPreenchimentoSala();
+    }
+
     function obterUrlAcessoAlunos() {
       return window.location.href.split('?')[0] + "?sala=" + codigoSala;
     }
@@ -1539,9 +1892,16 @@
       const turma = document.getElementById('input-turma').value.trim();
       const prof = document.getElementById('input-professora').value.trim();
       const disc = document.getElementById('select-disciplina').value.trim();
-      const nivel = document.getElementById('select-nivel').value.trim();
+      const nivel = idCampoNivel().map(id => document.getElementById(id).value.trim()).every(v => v !== "");
 
-      return escola !== "" && uf !== "" && turma !== "" && prof !== "" && disc !== "" && nivel !== "";
+      return escola !== "" && uf !== "" && turma !== "" && prof !== "" && disc !== "" && nivel;
+    }
+
+    // Campos que definem o conteúdo da partida, conforme o modo escolhido
+    function idCampoNivel() {
+      return document.getElementById('select-modo').value === "municipios"
+        ? ['select-abrangencia', 'select-dificuldade', 'select-rodadas']
+        : ['select-nivel'];
     }
 
     function verificarPreenchimentoSala() {
@@ -1637,7 +1997,7 @@
     }
 
     function limparDestaquesInvalidos() {
-      ['input-escola', 'select-uf', 'input-turma', 'input-professora', 'select-disciplina', 'select-nivel', 'input-nome-equipe'].forEach(id => {
+      ['input-escola', 'select-uf', 'input-turma', 'input-professora', 'select-disciplina', 'select-nivel', 'select-abrangencia', 'input-nome-equipe'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.classList.remove('campo-invalido');
       });
@@ -1661,8 +2021,15 @@
         professora: nomeProfessora,
         disciplina: disciplinaSelecionada,
         nivel: nivelSelecionado,
+        modo: modoJogo,
         dataRegistro: new Date().toLocaleString('pt-BR')
       };
+
+      if (modoJogo === "municipios") {
+        // Os alunos recebem exatamente os mesmos municípios sorteados para o gabarito do professor
+        dadosSala.abrangencia = abrangenciaSelecionada;
+        dadosSala.codigos = codigosMunicipios;
+      }
 
       try {
         await fetch(`${FIREBASE_URL}/salas/${codigoSala}/info.json`, {
@@ -1690,13 +2057,17 @@
           nomeProfessora = data.professora || "---";
           disciplinaSelecionada = data.disciplina || "Geografia";
           nivelSelecionado = data.nivel || "1";
+          modoJogo = data.modo === "municipios" ? "municipios" : "estados"; // salas antigas = estados
+          abrangenciaSelecionada = data.abrangencia || "";
+          codigosMunicipios = Array.isArray(data.codigos) ? data.codigos : [];
 
           document.getElementById('display-escola').innerText = ufEscola ? `${nomeEscola} (${ufEscola})` : nomeEscola;
           document.getElementById('display-turma').innerText = nomeTurma;
           document.getElementById('display-disciplina').innerText = disciplinaSelecionada;
           document.getElementById('display-professora').innerText = nomeProfessora;
-          
-          const textoNivel = nivelSelecionado === "todos" ? "Todos os Estados (27 UF)" : `Nível ${nivelSelecionado}`;
+
+          aplicarTextosDoModo();
+          const textoNivel = descreverNivel();
           document.getElementById('badge-nivel-aluno').innerText = textoNivel;
           document.getElementById('nivel-display').innerText = textoNivel;
         }
@@ -1775,7 +2146,7 @@
           pontuacaoAtual = 0;
           jogoFinalizado = false;
           document.getElementById('modal-ranking').classList.remove('active');
-          filtrarDesafiosPorNivel(nivelSelecionado);
+          prepararDesafiosDaPartida();
           carregarDesafio(0);
         };
       } else {
@@ -1815,7 +2186,7 @@
       const msgValidacao = document.getElementById('msg-validacao-form');
 
       if (isModoProfessor) {
-        const camposIds = ['input-escola', 'select-uf', 'input-turma', 'input-professora', 'select-disciplina', 'select-nivel'];
+        const camposIds = ['input-escola', 'select-uf', 'input-turma', 'input-professora', 'select-disciplina', ...idCampoNivel()];
         if (!camposProfessorCompletos()) {
           destacarCamposVazios(camposIds);
           msgValidacao.innerText = "⚠️ Por favor, preencha todos os campos obrigatórios (Escola, UF, Turma, Professor, Disciplina e Nível) para gerar a sala.";
@@ -1836,7 +2207,32 @@
         nomeTurma = document.getElementById('input-turma').value.trim();
         nomeProfessora = document.getElementById('input-professora').value.trim();
         disciplinaSelecionada = document.getElementById('select-disciplina').value;
-        nivelSelecionado = document.getElementById('select-nivel').value;
+        modoJogo = document.getElementById('select-modo').value;
+
+        if (modoJogo === "municipios") {
+          nivelSelecionado = document.getElementById('select-dificuldade').value;
+          abrangenciaSelecionada = document.getElementById('select-abrangencia').value;
+          numRodadas = parseInt(document.getElementById('select-rodadas').value, 10) || 10;
+
+          const btnIniciar = document.getElementById('btn-iniciar-partida');
+          const textoOriginal = btnIniciar.innerText;
+          btnIniciar.disabled = true;
+          btnIniciar.innerText = "⏳ Sorteando municípios...";
+          try {
+            const base = await carregarBaseMunicipios();
+            codigosMunicipios = sortearMunicipios(base, abrangenciaSelecionada, nivelSelecionado, numRodadas);
+            await prepararDesafiosMunicipios();
+          } catch (e) {
+            msgValidacao.innerText = "⚠️ Não foi possível carregar os municípios (IBGE). Verifique a conexão e tente novamente.";
+            msgValidacao.classList.add('visivel');
+            return;
+          } finally {
+            btnIniciar.disabled = false;
+            btnIniciar.innerText = textoOriginal;
+          }
+        } else {
+          nivelSelecionado = document.getElementById('select-nivel').value;
+        }
 
         await salvarInfoSalaFirebase();
       } else {
@@ -1852,6 +2248,25 @@
         nomeEquipe = equipeInput;
         await buscarInfoSalaFirebase();
 
+        if (modoJogo === "municipios") {
+          const btnIniciar = document.getElementById('btn-iniciar-partida');
+          btnIniciar.disabled = true;
+          btnIniciar.innerText = "⏳ Carregando municípios...";
+          try {
+            await prepararDesafiosMunicipios();
+          } catch (e) {
+            desafiosDaPartida = [];
+          } finally {
+            btnIniciar.disabled = false;
+            btnIniciar.innerText = "Iniciar Partida";
+          }
+          if (desafiosDaPartida.length === 0) {
+            msgValidacao.innerText = "⚠️ Não foi possível carregar os municípios desta sala. Verifique a conexão e tente novamente.";
+            msgValidacao.classList.add('visivel');
+            return;
+          }
+        }
+
         try {
           const audioFaustao = document.getElementById('audio-faustao-errou');
           if (audioFaustao) audioFaustao.load();
@@ -1865,12 +2280,15 @@
       document.getElementById('display-turma').innerText = nomeTurma;
       document.getElementById('display-disciplina').innerText = disciplinaSelecionada;
       document.getElementById('display-professora').innerText = nomeProfessora;
-      document.getElementById('nivel-display').innerText = nivelSelecionado === "todos" ? "Todos os Estados" : `Nível ${nivelSelecionado}`;
+      document.getElementById('nivel-display').innerText = descreverNivel();
 
+      aplicarTextosDoModo();
       configurarInterfacePorPapel();
       document.getElementById('modal-registro').classList.remove('active');
-      
-      filtrarDesafiosPorNivel(nivelSelecionado);
+
+      if (modoJogo !== "municipios") {
+        filtrarDesafiosPorNivel(nivelSelecionado);
+      }
       
       if (!isModoProfessor) {
         enviarPontuacaoFirebase();
@@ -1930,7 +2348,7 @@
       if (isModoProfessor || rodadaEncerrada) return;
       const desafio = desafiosDaPartida[indiceAtual];
       const municipio = desafio.municipio;
-      const letrasNaoAdivinhadas = municipio.split('').filter(char => char !== ' ' && !letrasAdivinhadas.includes(char));
+      const letrasNaoAdivinhadas = municipio.split('').filter(char => ehLetra(char) && !letrasAdivinhadas.includes(char));
 
       if (letrasNaoAdivinhadas.length > 0) {
         const custo = obterCustoDica(desafio.nivel);
@@ -1947,7 +2365,8 @@
     }
 
     function revelarNomeNaBandeira(nomeMunicipio) {
-      document.getElementById('legenda-bandeira').innerText = `Bandeira de ${nomeMunicipio}`;
+      document.getElementById('legenda-bandeira').innerText =
+        modoJogo === "municipios" ? nomeMunicipio : `Bandeira de ${nomeMunicipio}`;
     }
 
     function ocultarNomeNaBandeira() {
@@ -2024,21 +2443,40 @@
       document.getElementById('modal-derrota').classList.remove('active');
 
       const imgElem = document.getElementById('img-bandeira');
-      imgElem.onerror = function() {
-        if (desafio.bandeiraFallback && this.src !== desafio.bandeiraFallback) {
-          this.src = desafio.bandeiraFallback;
-        }
-      };
-      imgElem.src = desafio.bandeira;
+      const tipoImagem = document.getElementById('tipo-imagem');
+      if (desafio.imagens) {
+        // Modo municípios: tenta bandeira > brasão > mapa > bandeira do estado
+        let tentativa = 0;
+        const mostrar = () => {
+          imgElem.src = desafio.imagens[tentativa].url;
+          tipoImagem.innerText = desafio.imagens[tentativa].tipo;
+        };
+        imgElem.onerror = function() {
+          if (tentativa < desafio.imagens.length - 1) {
+            tentativa++;
+            mostrar();
+          }
+        };
+        mostrar();
+      } else {
+        tipoImagem.innerText = "";
+        imgElem.onerror = function() {
+          if (desafio.bandeiraFallback && this.src !== desafio.bandeiraFallback) {
+            this.src = desafio.bandeiraFallback;
+          }
+        };
+        imgElem.src = desafio.bandeira;
+      }
 
-      document.getElementById('progresso-rodada').innerText = `Bandeira ${indiceAtual + 1} de ${desafiosDaPartida.length} • Vale ${desafio.pontos} pts`;
-      document.getElementById('nivel-display').innerText = `Nível ${desafio.nivel}`;
+      const rotuloRodada = desafio.imagens ? "Município" : "Bandeira";
+      document.getElementById('progresso-rodada').innerText = `${rotuloRodada} ${indiceAtual + 1} de ${desafiosDaPartida.length} • Vale ${desafio.pontos} pts`;
+      document.getElementById('nivel-display').innerText = desafio.rotuloNivel || `Nível ${desafio.nivel}`;
       document.getElementById('texto-dica').innerText = desafio.dica;
 
       if (isModoProfessor) {
         // Para o Professor: Revela o nome da bandeira e preenche todas as letras automaticamente!
         revelarNomeNaBandeira(desafio.nomeExibicao);
-        letrasAdivinhadas = desafio.municipio.split('').filter(c => c !== ' ');
+        letrasAdivinhadas = desafio.municipio.split('').filter(ehLetra);
         renderizarPalavra();
 
         document.getElementById('btn-prof-anterior').disabled = (indiceAtual === 0);
@@ -2072,16 +2510,29 @@
       container.innerHTML = '';
       const palavra = desafiosDaPartida[indiceAtual].municipio;
 
-      for (let char of palavra) {
-        const slot = document.createElement('div');
-        if (char === ' ') {
-          slot.classList.add('letra-slot', 'espaco');
-        } else {
-          slot.classList.add('letra-slot');
-          slot.innerText = letrasAdivinhadas.includes(char) ? char : '';
+      // Cada palavra fica num grupo próprio para não quebrar no meio em nomes longos
+      palavra.split(' ').forEach((trecho, idx) => {
+        if (idx > 0) {
+          const espaco = document.createElement('div');
+          espaco.classList.add('letra-slot', 'espaco');
+          container.appendChild(espaco);
         }
-        container.appendChild(slot);
-      }
+        const grupo = document.createElement('div');
+        grupo.classList.add('palavra-grupo');
+        for (let char of trecho) {
+          const slot = document.createElement('div');
+          slot.classList.add('letra-slot');
+          if (ehLetra(char)) {
+            slot.innerText = letrasAdivinhadas.includes(char) ? char : '';
+          } else {
+            // Hífen e apóstrofo: já revelados (não existem no teclado)
+            slot.classList.add('simbolo');
+            slot.innerText = char;
+          }
+          grupo.appendChild(slot);
+        }
+        container.appendChild(grupo);
+      });
     }
 
     function renderizarTeclado() {
@@ -2129,7 +2580,7 @@
     function verificarVitoria() {
       const desafio = desafiosDaPartida[indiceAtual];
       const municipio = desafio.municipio;
-      const ganhou = municipio.split('').every(char => char === ' ' || letrasAdivinhadas.includes(char));
+      const ganhou = municipio.split('').every(char => !ehLetra(char) || letrasAdivinhadas.includes(char));
       
       if (ganhou) {
         rodadaEncerrada = true;
@@ -2177,17 +2628,20 @@
       const isUltima = indiceAtual + 1 >= desafiosDaPartida.length;
       const btnAvancar = document.getElementById('btn-avancar-derrota');
       btnAvancar.innerText = isUltima ? "Ver Ranking Final 🏆" : "Próxima Bandeira";
+      const resposta = modoJogo === "municipios"
+        ? `O município era <strong>${desafio.nomeExibicao}</strong>.`
+        : `A bandeira pertencia ao estado de <strong>${desafio.nomeExibicao}</strong>.`;
 
       if (porTempo) {
         titulo.innerText = "⏰ Tempo Esgotado!";
-        containerMsg.innerHTML = `A bandeira pertencia ao estado de <strong>${desafio.nomeExibicao}</strong>.<br><small style="color:var(--texto-suave);">Avançando automaticamente...</small>`;
+        containerMsg.innerHTML = `${resposta}<br><small style="color:var(--texto-suave);">Avançando automaticamente...</small>`;
         
         avancoAutomaticoTimeout = setTimeout(() => {
           avancarProximaBandeira();
         }, 2500);
       } else {
         titulo.innerText = "Fim das tentativas";
-        containerMsg.innerHTML = `A bandeira pertencia ao estado de <strong>${desafio.nomeExibicao}</strong>.`;
+        containerMsg.innerHTML = resposta;
       }
 
       setTimeout(() => document.getElementById('modal-derrota').classList.add('active'), 300);
@@ -2232,6 +2686,7 @@
       }
     });
 
+    preencherSelectAbrangencia();
     filtrarDesafiosPorNivel("1");
     verificarParametrosURL();
     configurarInterfacePorPapel();
@@ -2269,7 +2724,9 @@
           const uf = info.uf ? ` - ${info.uf}` : "";
           const turma = info.turma || "Turma não informada";
           const prof = info.professora || "Professor(a) não informado(a)";
-          const nivel = info.nivel ? `Nível ${info.nivel}` : "---";
+          const nivel = info.modo === "municipios"
+            ? `Municípios (${info.abrangencia === "BR" ? "Brasil" : info.abrangencia}) • ${(DIFICULDADES[info.nivel] || DIFICULDADES.facil).rotulo}`
+            : (info.nivel ? `Nível ${info.nivel}` : "---");
 
           container.innerHTML += `
             <div style="background: #fff; border: 1px solid #cbd5e0; border-radius: 8px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
